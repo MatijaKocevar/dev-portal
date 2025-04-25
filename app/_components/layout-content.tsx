@@ -42,7 +42,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
                         <SidebarTrigger />
                         <h1 className="text-xl font-semibold">{pageTitle}</h1>
                     </div>
-                    <div className="p-4">{children}</div>
+                    <div className="p-6">{children}</div>
                 </main>
             </div>
         </SidebarProvider>

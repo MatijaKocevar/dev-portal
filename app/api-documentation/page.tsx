@@ -29,7 +29,7 @@ export default function APIDocumentationPage() {
     }, []);
 
     return (
-        <div className="flex-1 space-y-4 p-8">
+        <div className="flex-1 ">
             <div className="swagger-wrapper">
                 <link rel="stylesheet" href="https://unpkg.com/swagger-ui-react/swagger-ui.css" />
                 <div id="swagger-ui" />

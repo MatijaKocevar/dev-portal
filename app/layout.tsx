@@ -1,5 +1,5 @@
 import "./globals.css";
-import { LayoutContent } from "@/components/layout-content";
+import { LayoutContent } from "@/app/_components/layout-content";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
