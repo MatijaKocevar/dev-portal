@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "API Documentation | Trading Platform Mock API",
+    title: "API Documentation | Dev Portal",
     description: "OpenAPI/Swagger documentation for the Trading Platform Mock API endpoints",
     other: {
         breadcrumb: "API Documentation",

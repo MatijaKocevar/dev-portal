@@ -24,7 +24,7 @@ export function AppSidebar() {
         <Sidebar>
             <SidebarHeader className="h-16 mb-2 flex justify-center border-b">
                 <Link href="/" className="px-4">
-                    <h2 className="text-2xl font-semibold tracking-tight">Mock API</h2>
+                    <h2 className="text-2xl font-semibold tracking-tight">Dev Portal</h2>
                 </Link>
             </SidebarHeader>
             <SidebarContent>

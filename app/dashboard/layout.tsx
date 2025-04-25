@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Dashboard | Trading Platform Mock API",
-    description: "Component test dashboard for the Trading Platform Mock API",
+    title: "Dashboard | Dev Portal",
+    description: "Component test dashboard for the Dev Portal",
     other: {
         breadcrumb: "Dashboard",
     },
