@@ -1,15 +1,12 @@
-import type { Metadata } from "next";
 import "./globals.css";
-
-export const metadata: Metadata = {
-    title: "Trading Platform Mock API Documentation",
-    description: "API documentation for the Trading Platform Mock API",
-};
+import { LayoutContent } from "@/components/layout-content";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en">
-            <body>{children}</body>
+        <html lang="en" suppressHydrationWarning className="dark">
+            <body className="min-h-screen bg-background">
+                <LayoutContent>{children}</LayoutContent>
+            </body>
         </html>
     );
 }
