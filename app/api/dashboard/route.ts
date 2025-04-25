@@ -42,11 +42,11 @@
  */
 
 import { NextResponse } from "next/server";
-import { getBatteryData } from "./battery-status/route";
-import { getFlexibilityData } from "./flexibility/route";
-import { getPowerData } from "./power/route";
-import { getFrequencyData } from "./frequency/route";
-import { getAcceptedBids } from "./accepted-bids/route";
+import { getBatteryData } from "./battery-status/_data";
+import { getFlexibilityData } from "./flexibility/_data";
+import { getPowerData } from "./power/_data";
+import { getFrequencyData } from "./frequency/_data";
+import { getAcceptedBids } from "./accepted-bids/_data";
 
 export async function GET() {
     const dashboardData = {

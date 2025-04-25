@@ -12,10 +12,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export const iframeHeight = "800px";
-
-export const description = "A sidebar with a header and a search form.";
-
 export default function Page() {
     return (
         <div className="flex flex-1">
