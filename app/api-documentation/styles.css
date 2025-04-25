@@ -120,3 +120,7 @@ path {
     fill: var(--primary) !important;
     color: var(--primary) !important;
 }
+
+.scheme-container {
+    display: none !important;
+}
