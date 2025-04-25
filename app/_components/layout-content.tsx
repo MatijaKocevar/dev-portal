@@ -5,7 +5,13 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export function LayoutContent({ children }: { children: React.ReactNode }) {
+export function LayoutContent({
+    children,
+    defaultSidebarState = true,
+}: {
+    children: React.ReactNode;
+    defaultSidebarState?: boolean;
+}) {
     const [pageTitle, setPageTitle] = useState("");
     const pathname = usePathname();
 
@@ -34,7 +40,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
     }, [pathname]);
 
     return (
-        <SidebarProvider>
+        <SidebarProvider defaultOpen={defaultSidebarState}>
             <div className="relative flex min-h-screen max-h-screen w-full overflow-hidden">
                 <AppSidebar />
                 <main className="flex-1 overflow-auto">
