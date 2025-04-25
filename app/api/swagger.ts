@@ -1,6 +1,10 @@
 import { createSwaggerSpec } from "next-swagger-doc";
 
 export const getApiDocs = () => {
+    const baseUrl = process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
     const spec = createSwaggerSpec({
         apiFolder: "app/api",
         definition: {
@@ -12,8 +16,8 @@ export const getApiDocs = () => {
             },
             servers: [
                 {
-                    url: "http://localhost:3000",
-                    description: "Local development server",
+                    url: baseUrl,
+                    description: "Current environment",
                 },
             ],
         },

@@ -30,6 +30,18 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Environment Variables
+
+Copy `.env.example` to `.env.local` and update the values:
+
+```bash
+cp .env.example .env.local
+```
+
+Required environment variables:
+
+- `NEXT_PUBLIC_API_URL`: The base URL of your API
+
 ## Structure
 
 - `/app` - Next.js app router pages and API routes
