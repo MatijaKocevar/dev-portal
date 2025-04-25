@@ -121,6 +121,10 @@ path {
     color: var(--primary) !important;
 }
 
+.swagger-ui .opblock-tag {
+    padding-top: 0 !important;
+}
+
 .scheme-container {
     display: none !important;
 }
