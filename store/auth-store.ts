@@ -27,6 +27,7 @@ interface AuthState {
     login: (credentials: LoginCredentials) => Promise<void>;
     logout: () => Promise<void>;
     refresh: () => Promise<void>;
+    silentRefresh: () => Promise<void>;
     refreshTimer: number | null;
     startRefreshTimer: (expiresIn: number) => void;
     stopRefreshTimer: () => void;
@@ -39,7 +40,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     refreshTimer: null,
 
     startRefreshTimer: (expiresIn: number) => {
-        const { refreshTimer, refresh } = get();
+        const { refreshTimer, silentRefresh } = get();
 
         if (refreshTimer) {
             window.clearTimeout(refreshTimer);
@@ -49,9 +50,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             return;
         }
 
-        const refreshDelay = Math.max(0, expiresIn - 30) * 1000;
+        const refreshDelay = 1000 * (expiresIn - 60); // Refresh 60 seconds before expiration
         const timer = window.setTimeout(() => {
-            void refresh();
+            void silentRefresh();
         }, refreshDelay);
 
         set({ refreshTimer: timer });
@@ -101,6 +102,45 @@ export const useAuthStore = create<AuthState>((set, get) => ({
                 accessToken: null,
                 isAuthenticated: false,
                 isLoading: false,
+            });
+
+            if (window.location.pathname !== "/login") {
+                window.location.href = "/login";
+            }
+        }
+    },
+
+    silentRefresh: async () => {
+        try {
+            const response = await fetch("/api/auth/token", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams({
+                    grant_type: "refresh_token",
+                }),
+                credentials: "include",
+            });
+
+            if (!response.ok) {
+                throw new Error("Token refresh failed");
+            }
+
+            const dto = await response.json();
+            const data = mapAuthResponse(dto);
+
+            set({
+                accessToken: data.accessToken,
+                isAuthenticated: true,
+            });
+
+            get().startRefreshTimer(data.expiresIn);
+        } catch {
+            get().stopRefreshTimer();
+            set({
+                accessToken: null,
+                isAuthenticated: false,
             });
 
             if (window.location.pathname !== "/login") {
