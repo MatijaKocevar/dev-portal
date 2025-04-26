@@ -133,5 +133,6 @@ path {
 }
 
 .scheme-container {
-    display: none !important;
+    /* display: none !important; */
+    padding: 0 0 !important;
 }
