@@ -1,72 +1,147 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { apiClient } from "@/lib/api-client";
+
+type DashboardData = {
+    acceptedBids: Array<{
+        product: string;
+        volume: number;
+        price: number;
+        deliveryStart: string;
+    }>;
+    batteryStatus: Array<{
+        time: string;
+        soc: number;
+        power: number;
+    }>;
+    flexibility: Array<{
+        hour: string;
+        estimatedUp: number;
+        offeredUp: number;
+        orderedUp: number;
+        suppliedUp: number;
+        estimatedDown: number;
+        offeredDown: number;
+        orderedDown: number;
+        suppliedDown: number;
+    }>;
+    power: Array<{
+        time: string;
+        grid: number;
+        consumption: number;
+        production: number;
+        baseline: number;
+    }>;
+    frequency: Array<{
+        time: string;
+        frequency: number;
+    }>;
+};
 
 export default function Page() {
+    const [data, setData] = useState<DashboardData | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await apiClient("/api/dashboard");
+                if (!response) return;
+                const json = await response.json();
+                setData(json);
+            } catch {
+                setError("Failed to load dashboard data");
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchData();
+    }, []);
+
+    if (loading) {
+        return <div className="flex flex-1 items-center justify-center">Loading...</div>;
+    }
+
+    if (error) {
+        return (
+            <div className="flex flex-1 items-center justify-center">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Error</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p>{error}</p>
+                        <Button onClick={() => window.location.reload()} className="mt-4">
+                            Retry
+                        </Button>
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
+
+    if (!data) return null;
+
     return (
         <div className="flex flex-1">
             <div className="flex flex-1 flex-col gap-4 p-4">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-3xl font-bold tracking-tight">Component Test Dashboard</h2>
-                    <Button>Test Button</Button>
+                    <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
                 </div>
 
-                <Separator className="my-4" />
+                <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Latest Battery Status</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            {data.batteryStatus.slice(-1)[0]?.soc.toFixed(1)}% SOC
+                        </CardContent>
+                    </Card>
 
-                <Tabs defaultValue="card" className="w-full">
-                    <TabsList>
-                        <TabsTrigger value="card">Card Test</TabsTrigger>
-                        <TabsTrigger value="buttons">Button Test</TabsTrigger>
-                    </TabsList>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Latest Grid Frequency</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            {data.frequency.slice(-1)[0]?.frequency.toFixed(2)} Hz
+                        </CardContent>
+                    </Card>
 
-                    <TabsContent value="card" className="space-y-4">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Card Component Test</CardTitle>
-                                <CardDescription>
-                                    Testing if shadcn components are working properly
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <p>
-                                    This is a test of the shadcn card component. If you can see this
-                                    with proper styling, the components are working!
-                                </p>
-                            </CardContent>
-                            <CardFooter className="flex justify-between">
-                                <Button variant="outline">Cancel</Button>
-                                <Button>Submit</Button>
-                            </CardFooter>
-                        </Card>
-                    </TabsContent>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Latest Power</CardTitle>
+                        </CardHeader>
+                        <CardContent>{data.power.slice(-1)[0]?.grid.toFixed(0)} W</CardContent>
+                    </Card>
+                </div>
 
-                    <TabsContent value="buttons" className="space-y-4">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Button Variants Test</CardTitle>
-                                <CardDescription>Testing different button styles</CardDescription>
-                            </CardHeader>
-                            <CardContent className="flex flex-wrap gap-4">
-                                <Button variant="default">Default</Button>
-                                <Button variant="destructive">Destructive</Button>
-                                <Button variant="outline">Outline</Button>
-                                <Button variant="secondary">Secondary</Button>
-                                <Button variant="ghost">Ghost</Button>
-                                <Button variant="link">Link</Button>
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-                </Tabs>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Recent Accepted Bids</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid grid-cols-4 gap-4 font-medium">
+                            <div>Product</div>
+                            <div>Volume</div>
+                            <div>Price</div>
+                            <div>Delivery Start</div>
+                            {data.acceptedBids.map((bid, i) => (
+                                <div key={i} className="contents">
+                                    <div>{bid.product}</div>
+                                    <div>{bid.volume}</div>
+                                    <div>{bid.price}</div>
+                                    <div>{bid.deliveryStart}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
             </div>
         </div>
     );

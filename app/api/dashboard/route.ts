@@ -47,8 +47,9 @@ import { getFlexibilityData } from "./flexibility/_data";
 import { getPowerData } from "./power/_data";
 import { getFrequencyData } from "./frequency/_data";
 import { getAcceptedBids } from "./accepted-bids/_data";
+import { withAuth } from "@/lib/auth";
 
-export async function GET() {
+export const GET = withAuth(async () => {
     const dashboardData = {
         acceptedBids: getAcceptedBids(),
         batteryStatus: getBatteryData(),
@@ -58,4 +59,4 @@ export async function GET() {
     };
 
     return NextResponse.json(dashboardData);
-}
+});

@@ -2,9 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { FileCode, LayoutDashboard } from "lucide-react";
+import { FileCode, LayoutDashboard, LogOut } from "lucide-react";
 import { NavMain } from "@/components/nav-main";
-import { Sidebar, SidebarContent, SidebarHeader } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/app/providers/auth-provider";
 
 const mainNav = [
     {
@@ -20,6 +22,8 @@ const mainNav = [
 ];
 
 export function AppSidebar() {
+    const { logout } = useAuth();
+
     return (
         <Sidebar>
             <SidebarHeader className="h-16 mb-2 flex justify-center border-b">
@@ -30,6 +34,12 @@ export function AppSidebar() {
             <SidebarContent>
                 <NavMain items={mainNav} />
             </SidebarContent>
+            <SidebarFooter>
+                <Button variant="ghost" className="w-full justify-start" onClick={logout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                </Button>
+            </SidebarFooter>
         </Sidebar>
     );
 }

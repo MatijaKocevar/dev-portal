@@ -39,6 +39,10 @@ export function LayoutContent({
         return () => observer.disconnect();
     }, [pathname]);
 
+    if (pathname === "/login") {
+        return children;
+    }
+
     return (
         <SidebarProvider defaultOpen={defaultSidebarState}>
             <div className="relative flex min-h-screen max-h-screen w-full overflow-hidden">

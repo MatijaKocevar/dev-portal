@@ -18,6 +18,19 @@ export const getApiDocs = () => {
                     description: "Current environment",
                 },
             ],
+            components: {
+                securitySchemes: {
+                    bearerAuth: {
+                        type: "http",
+                        scheme: "bearer",
+                    },
+                },
+            },
+            security: [
+                {
+                    bearerAuth: [],
+                },
+            ],
         },
     });
     return spec;
