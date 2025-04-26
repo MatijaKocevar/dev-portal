@@ -50,8 +50,11 @@ export default function Page() {
         async function fetchData() {
             try {
                 const response = await apiClient("/api/dashboard");
+
                 if (!response) return;
+
                 const json = await response.json();
+
                 setData(json);
             } catch {
                 setError("Failed to load dashboard data");

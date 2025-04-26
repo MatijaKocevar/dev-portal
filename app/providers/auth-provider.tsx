@@ -27,11 +27,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
         const storedRefreshToken = localStorage.getItem("refreshToken");
+
         if (storedToken && storedRefreshToken) {
             setToken(storedToken);
             setRefreshTokenValue(storedRefreshToken);
             scheduleTokenRefresh(storedRefreshToken);
         }
+
         return () => {
             if (refreshTimeoutId) clearTimeout(refreshTimeoutId);
         };
@@ -39,8 +41,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const scheduleTokenRefresh = async (currentRefreshToken: string) => {
         if (refreshTimeoutId) clearTimeout(refreshTimeoutId);
+
         try {
             const tokens = await refreshToken(currentRefreshToken);
+
             updateTokens(tokens);
             scheduleNextRefresh(tokens);
         } catch (error) {
@@ -54,6 +58,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const scheduleNextRefresh = (tokens: TokenResponse) => {
         const timeoutMs = (tokens.expires_in - 60) * 1000;
+
         refreshTimeoutId = setTimeout(() => {
             if (refreshTokenValue) {
                 scheduleTokenRefresh(refreshTokenValue);
@@ -64,14 +69,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const updateTokens = (tokens: TokenResponse) => {
         localStorage.setItem("token", tokens.access_token);
         localStorage.setItem("refreshToken", tokens.refresh_token);
+
         setToken(tokens.access_token);
         setRefreshTokenValue(tokens.refresh_token);
     };
 
     const login = async (username: string, password: string) => {
         const tokens = await loginWithPassword(username, password);
+
         updateTokens(tokens);
         scheduleNextRefresh(tokens);
+
         router.push("/dashboard");
     };
 
@@ -81,11 +89,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 await keycloakLogout(refreshTokenValue);
             } catch {}
         }
+
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
+
         setToken(null);
         setRefreshTokenValue(null);
+
         if (refreshTimeoutId) clearTimeout(refreshTimeoutId);
+
         router.push("/login");
     };
 

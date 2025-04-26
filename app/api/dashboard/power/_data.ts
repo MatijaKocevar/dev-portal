@@ -11,13 +11,10 @@ export function getPowerData(): PowerDataPoint[] {
         const hour = Math.floor(index / 60);
         const minute = index % 60;
         const time = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
-
         const minuteFraction = index / (24 * 60);
-
         const gridFrequency = 1.3;
         const consumptionFrequency = 1.9;
         const productionFrequency = 2.5;
-
         const grid =
             288 *
             (Math.sin(minuteFraction * 2 * Math.PI * gridFrequency + Math.PI / 2) * 0.5 + 0.5);

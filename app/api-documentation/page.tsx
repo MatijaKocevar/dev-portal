@@ -36,6 +36,7 @@ export default function APIDocumentationPage() {
                     if (token) {
                         req.headers.Authorization = `Bearer ${token}`;
                     }
+
                     return req;
                 },
             });
