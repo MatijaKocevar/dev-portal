@@ -1,4 +1,28 @@
-export const unitsData = () => [
+export type Unit = {
+    id: string;
+    name: string;
+    type: string;
+    function: string;
+    energySupplier: string;
+    marketParticipant: string;
+    aggregator: string;
+    offeredServices: string[];
+    owner: string;
+    address: string;
+    city: string;
+    zipCode: string;
+    country: string;
+    coordinates: { lat: number; lng: number };
+    grid: { a: string; b: string };
+    pv: boolean;
+    battery: boolean;
+    hvac: boolean;
+    evse: boolean;
+    flexUpMw: number;
+    flexDownMw: number;
+};
+
+export const unitsData = (): Unit[] => [
     {
         id: "1",
         name: "ENSET",

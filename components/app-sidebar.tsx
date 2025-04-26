@@ -16,7 +16,7 @@ const mainNav = [
     },
     {
         title: "API Documentation",
-        href: "/api-documentation",
+        href: "/api-docs",
         icon: FileCode,
     },
 ];
