@@ -1,19 +1,13 @@
 "use client";
 import "./styles.css";
-import { useAuth } from "@/app/providers/auth-provider";
 import Script from "next/script";
-import { useEffect, useCallback } from "react";
-
-interface SwaggerRequest {
-    headers: Record<string, string>;
-    [key: string]: unknown;
-}
+import { useEffect } from "react";
 
 interface SwaggerUIConstructor {
     (config: {
         url: string;
         dom_id: string;
-        requestInterceptor?: (req: SwaggerRequest) => SwaggerRequest;
+        withCredentials?: boolean;
     }): void;
 }
 
@@ -25,27 +19,24 @@ declare global {
 }
 
 export default function APIDocumentationPage() {
-    const { token } = useAuth();
+    const initializeSwagger = () => {
+        if (!window.SwaggerUIBundle) return;
 
-    const initSwagger = useCallback(() => {
-        if (window.SwaggerUIBundle) {
-            window.ui = window.SwaggerUIBundle({
-                url: "/api/docs",
-                dom_id: "#swagger-ui",
-                requestInterceptor: (req) => {
-                    if (token) {
-                        req.headers.Authorization = `Bearer ${token}`;
-                    }
-
-                    return req;
-                },
-            });
-        }
-    }, [token]);
+        window.ui = window.SwaggerUIBundle({
+            url: "/api/docs",
+            dom_id: "#swagger-ui",
+            withCredentials: true,
+        });
+    };
 
     useEffect(() => {
-        initSwagger();
-    }, [initSwagger]);
+        initializeSwagger();
+        return () => {
+            if (window.ui && typeof window.ui === "object" && "unmount" in window.ui) {
+                (window.ui as { unmount: () => void }).unmount();
+            }
+        };
+    }, []);
 
     return (
         <div className="flex-1">
@@ -54,7 +45,7 @@ export default function APIDocumentationPage() {
                 <div id="swagger-ui" />
                 <Script
                     src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-bundle.js"
-                    onLoad={initSwagger}
+                    onLoad={initializeSwagger}
                 />
             </div>
         </div>

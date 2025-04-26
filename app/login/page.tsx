@@ -1,38 +1,34 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useAuth } from "@/app/providers/auth-provider";
+import { useAuthStore } from "@/store/auth-store";
 
 export default function LoginPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const { login } = useAuth();
+    const { login } = useAuthStore();
+    const router = useRouter();
 
-    async function handleSubmit(e: React.FormEvent) {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        if (isLoading) return;
-
         setError("");
         setIsLoading(true);
 
         try {
             await login(username, password);
-        } catch (err) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError("Invalid username or password");
-            }
+            router.push("/dashboard");
+        } catch {
+            setError("Invalid credentials");
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     return (
         <div className="flex min-h-screen items-center justify-center">

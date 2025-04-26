@@ -6,7 +6,7 @@ import { FileCode, LayoutDashboard, LogOut } from "lucide-react";
 import { NavMain } from "@/components/nav-main";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/app/providers/auth-provider";
+import { useAuthStore } from "@/store/auth-store";
 
 const mainNav = [
     {
@@ -22,7 +22,7 @@ const mainNav = [
 ];
 
 export function AppSidebar() {
-    const { logout } = useAuth();
+    const { logout } = useAuthStore();
 
     return (
         <Sidebar>

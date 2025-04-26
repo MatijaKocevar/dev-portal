@@ -20,15 +20,16 @@ export const getApiDocs = () => {
             ],
             components: {
                 securitySchemes: {
-                    bearerAuth: {
-                        type: "http",
-                        scheme: "bearer",
+                    cookieAuth: {
+                        type: "apiKey",
+                        in: "cookie",
+                        name: "access_token",
                     },
                 },
             },
             security: [
                 {
-                    bearerAuth: [],
+                    cookieAuth: [],
                 },
             ],
         },

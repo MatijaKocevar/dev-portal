@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -11,8 +13,22 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAuthStore } from "@/store/auth-store";
 
 export default function Page() {
+    const router = useRouter();
+    const { isAuthenticated } = useAuthStore();
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            router.push("/login");
+        }
+    }, [isAuthenticated, router]);
+
+    if (!isAuthenticated) {
+        return null;
+    }
+
     return (
         <div className="flex flex-1">
             <div className="flex flex-1 flex-col gap-4 p-4">

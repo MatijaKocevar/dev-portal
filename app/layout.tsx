@@ -1,18 +1,30 @@
-import "./globals.css";
-import { cookies } from "next/headers";
-import { LayoutContent } from "@/app/_components/layout-content";
-import { AuthProvider } from "@/app/providers/auth-provider";
+"use client";
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-    const cookieStore = await cookies();
-    const sidebarState = cookieStore.get("sidebar_state")?.value === "true";
+import "./globals.css";
+import { useEffect } from "react";
+import { LayoutContent } from "@/app/_components/layout-content";
+import { useAuthStore } from "@/store/auth-store";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    const { refresh, setAuthenticated } = useAuthStore();
+
+    useEffect(() => {
+        const initAuth = async () => {
+            try {
+                await refresh();
+                setAuthenticated(true);
+            } catch {
+                setAuthenticated(false);
+            }
+        };
+
+        initAuth();
+    }, []);
 
     return (
         <html lang="en" suppressHydrationWarning className="dark">
             <body className="min-h-screen bg-background">
-                <AuthProvider>
-                    <LayoutContent defaultSidebarState={sidebarState}>{children}</LayoutContent>
-                </AuthProvider>
+                <LayoutContent>{children}</LayoutContent>
             </body>
         </html>
     );

@@ -1,10 +1,10 @@
 "use client";
 
 import { redirect } from "next/navigation";
-import { useAuth } from "@/app/providers/auth-provider";
+import { useAuthStore } from "@/store/auth-store";
 
 export default function Page() {
-    const { token } = useAuth();
+    const { isAuthenticated } = useAuthStore();
 
-    return token ? redirect("/dashboard") : redirect("/login");
+    return isAuthenticated ? redirect("/dashboard") : redirect("/login");
 }
