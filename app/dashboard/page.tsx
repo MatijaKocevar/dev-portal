@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,13 +11,40 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthStore } from "@/store/auth-store";
+
+type ApiStatus = {
+    status: "pending" | "healthy" | "unhealthy" | "error";
+    lastChecked: string | null;
+};
+
+type ApiStatuses = {
+    [key: string]: ApiStatus;
+};
+
+type Endpoint = {
+    name: string;
+    healthUrl?: string;
+    serverUrl?: string;
+};
 
 export default function Page() {
     const router = useRouter();
     const { isAuthenticated } = useAuthStore();
+    const [apiStatuses, setApiStatuses] = useState<ApiStatuses>({
+        FRONTEND: { status: "pending", lastChecked: null },
+        BACKEND: { status: "pending", lastChecked: null },
+        KEYCLOAK: { status: "pending", lastChecked: null },
+        AGENT: { status: "pending", lastChecked: null },
+    });
+
+    const [endpoints] = useState<Endpoint[]>([
+        { name: "FRONTEND", serverUrl: "https://localhost:5173" },
+        { name: "BACKEND", healthUrl: "http://localhost:5000/api/v1/health" },
+        { name: "KEYCLOAK", healthUrl: "http://localhost:9000/health" },
+        { name: "AGENT", healthUrl: "http://localhost:5001/api/agent/health" },
+    ]);
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -25,64 +52,212 @@ export default function Page() {
         }
     }, [isAuthenticated, router]);
 
+    const pingServer = async (url: string): Promise<boolean> => {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+            const response = await fetch(url, {
+                method: "HEAD",
+                signal: controller.signal,
+            });
+
+            clearTimeout(timeoutId);
+            return response.ok;
+        } catch {
+            return false;
+        }
+    };
+
+    useEffect(() => {
+        const checkAllApis = async () => {
+            const results = await Promise.all(
+                endpoints.map(async (endpoint) => {
+                    try {
+                        if (endpoint.healthUrl) {
+                            const response = await fetch(endpoint.healthUrl);
+                            return {
+                                name: endpoint.name,
+                                status: response.ok ? "healthy" : "unhealthy",
+                                lastChecked: new Date().toLocaleTimeString(),
+                            };
+                        } else if (endpoint.serverUrl) {
+                            const isServerUp = await pingServer(endpoint.serverUrl);
+                            return {
+                                name: endpoint.name,
+                                status: isServerUp ? "healthy" : "error",
+                                lastChecked: new Date().toLocaleTimeString(),
+                            };
+                        }
+
+                        return {
+                            name: endpoint.name,
+                            status: "error",
+                            lastChecked: new Date().toLocaleTimeString(),
+                        };
+                    } catch {
+                        if (endpoint.serverUrl) {
+                            const isServerUp = await pingServer(endpoint.serverUrl);
+                            return {
+                                name: endpoint.name,
+                                status: isServerUp ? "healthy" : "error",
+                                lastChecked: new Date().toLocaleTimeString(),
+                            };
+                        }
+                        return {
+                            name: endpoint.name,
+                            status: "error",
+                            lastChecked: new Date().toLocaleTimeString(),
+                        };
+                    }
+                })
+            );
+
+            const updatedStatuses: ApiStatuses = {};
+            results.forEach((result) => {
+                updatedStatuses[result.name] = {
+                    status: result.status as ApiStatus["status"],
+                    lastChecked: result.lastChecked,
+                };
+            });
+
+            setApiStatuses((prev) => ({ ...prev, ...updatedStatuses }));
+        };
+
+        checkAllApis();
+
+        const intervalId = setInterval(checkAllApis, 30000);
+
+        return () => clearInterval(intervalId);
+    }, [endpoints]);
+
     if (!isAuthenticated) {
         return null;
     }
 
+    const getStatusColor = (status: ApiStatus["status"]) => {
+        switch (status) {
+            case "healthy":
+                return "bg-green-500";
+            case "unhealthy":
+                return "bg-red-500";
+            case "error":
+                return "bg-yellow-500";
+            default:
+                return "bg-gray-300";
+        }
+    };
+
+    const handleCheckNow = async (apiName: string) => {
+        setApiStatuses((prev) => ({
+            ...prev,
+            [apiName]: { ...prev[apiName], status: "pending" },
+        }));
+
+        const endpoint = endpoints.find((ep) => ep.name === apiName);
+
+        if (!endpoint) {
+            return;
+        }
+
+        try {
+            if (endpoint.healthUrl) {
+                const response = await fetch(endpoint.healthUrl);
+                setApiStatuses((prev) => ({
+                    ...prev,
+                    [apiName]: {
+                        status: response.ok ? "healthy" : "unhealthy",
+                        lastChecked: new Date().toLocaleTimeString(),
+                    },
+                }));
+            } else if (endpoint.serverUrl) {
+                const isServerUp = await pingServer(endpoint.serverUrl);
+                setApiStatuses((prev) => ({
+                    ...prev,
+                    [apiName]: {
+                        status: isServerUp ? "healthy" : "error",
+                        lastChecked: new Date().toLocaleTimeString(),
+                    },
+                }));
+            } else {
+                setApiStatuses((prev) => ({
+                    ...prev,
+                    [apiName]: {
+                        status: "error",
+                        lastChecked: new Date().toLocaleTimeString(),
+                    },
+                }));
+            }
+        } catch {
+            if (endpoint.serverUrl) {
+                const isServerUp = await pingServer(endpoint.serverUrl);
+                setApiStatuses((prev) => ({
+                    ...prev,
+                    [apiName]: {
+                        status: isServerUp ? "healthy" : "error",
+                        lastChecked: new Date().toLocaleTimeString(),
+                    },
+                }));
+            } else {
+                setApiStatuses((prev) => ({
+                    ...prev,
+                    [apiName]: {
+                        status: "error",
+                        lastChecked: new Date().toLocaleTimeString(),
+                    },
+                }));
+            }
+        }
+    };
+
     return (
         <div className="flex flex-1">
-            <div className="flex flex-1 flex-col gap-4 p-4">
+            <div className="flex flex-1 flex-col gap-4">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-3xl font-bold tracking-tight">Component Test Dashboard</h2>
-                    <Button>Test Button</Button>
+                    <h2 className="text-2xl font-bold tracking-tight">System Status</h2>
                 </div>
 
-                <Separator className="my-4" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {Object.entries(apiStatuses).map(([apiName, data]) => {
+                        const endpoint = endpoints.find((ep) => ep.name === apiName);
+                        const endpointUrl = endpoint?.healthUrl || endpoint?.serverUrl;
 
-                <Tabs defaultValue="card" className="w-full">
-                    <TabsList>
-                        <TabsTrigger value="card">Card Test</TabsTrigger>
-                        <TabsTrigger value="buttons">Button Test</TabsTrigger>
-                    </TabsList>
-
-                    <TabsContent value="card" className="space-y-4">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Card Component Test</CardTitle>
-                                <CardDescription>
-                                    Testing if shadcn components are working properly
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <p>
-                                    This is a test of the shadcn card component. If you can see this
-                                    with proper styling, the components are working!
-                                </p>
-                            </CardContent>
-                            <CardFooter className="flex justify-between">
-                                <Button variant="outline">Cancel</Button>
-                                <Button>Submit</Button>
-                            </CardFooter>
-                        </Card>
-                    </TabsContent>
-
-                    <TabsContent value="buttons" className="space-y-4">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Button Variants Test</CardTitle>
-                                <CardDescription>Testing different button styles</CardDescription>
-                            </CardHeader>
-                            <CardContent className="flex flex-wrap gap-4">
-                                <Button variant="default">Default</Button>
-                                <Button variant="destructive">Destructive</Button>
-                                <Button variant="outline">Outline</Button>
-                                <Button variant="secondary">Secondary</Button>
-                                <Button variant="ghost">Ghost</Button>
-                                <Button variant="link">Link</Button>
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-                </Tabs>
+                        return (
+                            <Card key={apiName}>
+                                <CardHeader>
+                                    <CardTitle className="flex items-center gap-2">
+                                        <div
+                                            className={`h-3 w-3 rounded-full ${getStatusColor(
+                                                data.status
+                                            )}`}
+                                        ></div>
+                                        {apiName.charAt(0).toUpperCase() + apiName.slice(1)} Service
+                                    </CardTitle>
+                                    <CardDescription>
+                                        Status: {data.status.toUpperCase()}
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="min-h-[60px]">
+                                    <p>Endpoint: {endpointUrl}</p>
+                                    {data.status === "pending" ? (
+                                        <Skeleton className="h-5 w-[180px] mt-1" />
+                                    ) : (
+                                        <p>
+                                            {data.lastChecked
+                                                ? `Last checked: ${data.lastChecked}`
+                                                : "\u00A0"}
+                                        </p>
+                                    )}
+                                </CardContent>
+                                <CardFooter>
+                                    <Button size="sm" onClick={() => handleCheckNow(apiName)}>
+                                        Check Now
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );

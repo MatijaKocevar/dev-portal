@@ -125,6 +125,12 @@ path {
     padding-top: 0 !important;
 }
 
+.swagger-ui #operations-tag-Dashboard {
+    padding-left: 0 !important;
+    font-weight: bold !important;
+    font-size: 22px !important;
+}
+
 .scheme-container {
     display: none !important;
 }
