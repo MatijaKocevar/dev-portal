@@ -11,7 +11,7 @@ export default function LoginPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const { login, isLoading } = useAuthStore();
+    const { login } = useAuthStore();
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -49,7 +49,7 @@ export default function LoginPage() {
                             required
                         />
                         {error && <div className="text-sm text-red-500">{error}</div>}
-                        <Button type="submit">{isLoading ? "Logging in..." : "Login"}</Button>
+                        <Button type="submit">Login</Button>
                     </form>
                 </CardContent>
             </Card>

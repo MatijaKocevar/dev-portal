@@ -10,11 +10,11 @@ export async function POST(request: NextRequest) {
 
     if (grant_type === "refresh_token") {
         const refreshToken = request.cookies.get("refresh_token")?.value;
-        
+
         if (!refreshToken) {
             return NextResponse.json({ error: "No refresh token" }, { status: 401 });
         }
-        
+
         const body = new URLSearchParams();
         body.append("client_id", CLIENT_ID!);
         body.append("grant_type", "refresh_token");
@@ -41,23 +41,23 @@ export async function POST(request: NextRequest) {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict" as const,
-            path: "/"
+            path: "/",
         };
 
         const res = NextResponse.json({
             access_token: data.access_token,
-            expires_in: data.expires_in
+            expires_in: data.expires_in,
         });
 
         res.cookies.set("access_token", data.access_token, {
             ...cookieOptions,
-            maxAge: data.expires_in
+            maxAge: data.expires_in,
         });
 
         if (data.refresh_token) {
             res.cookies.set("refresh_token", data.refresh_token, {
                 ...cookieOptions,
-                maxAge: data.refresh_expires_in
+                maxAge: data.refresh_expires_in,
             });
         }
 
@@ -91,23 +91,23 @@ export async function POST(request: NextRequest) {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict" as const,
-        path: "/"
+        path: "/",
     };
 
     const res = NextResponse.json({
         access_token: data.access_token,
-        expires_in: data.expires_in
+        expires_in: data.expires_in,
     });
 
     res.cookies.set("access_token", data.access_token, {
         ...cookieOptions,
-        maxAge: data.expires_in
+        maxAge: data.expires_in,
     });
 
     if (data.refresh_token) {
         res.cookies.set("refresh_token", data.refresh_token, {
             ...cookieOptions,
-            maxAge: data.refresh_expires_in
+            maxAge: data.refresh_expires_in,
         });
     }
 

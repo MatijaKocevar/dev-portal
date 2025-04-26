@@ -4,6 +4,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { AuthCheck } from "./auth-check";
 
 export function LayoutContent({
     children,
@@ -52,7 +53,9 @@ export function LayoutContent({
                         <SidebarTrigger />
                         <h1 className="text-xl font-semibold">{pageTitle}</h1>
                     </div>
-                    <div className="p-6">{children}</div>
+                    <AuthCheck>
+                        <div className="p-6">{children}</div>
+                    </AuthCheck>
                 </main>
             </div>
         </SidebarProvider>
