@@ -6,19 +6,10 @@ import { LayoutContent } from "@/app/_components/layout-content";
 import { useAuthStore } from "@/store/auth-store";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-    const { refresh, setAuthenticated } = useAuthStore();
+    const { refresh } = useAuthStore();
 
     useEffect(() => {
-        const initAuth = async () => {
-            try {
-                await refresh();
-                setAuthenticated(true);
-            } catch {
-                setAuthenticated(false);
-            }
-        };
-
-        initAuth();
+        refresh();
     }, []);
 
     return (

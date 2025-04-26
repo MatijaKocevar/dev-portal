@@ -11,22 +11,18 @@ export default function LoginPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const { login } = useAuthStore();
+    const { login, isLoading } = useAuthStore();
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
-        setIsLoading(true);
 
         try {
-            await login(username, password);
+            await login({ username, password });
             router.push("/dashboard");
         } catch {
             setError("Invalid credentials");
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -52,10 +48,8 @@ export default function LoginPage() {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
-                        {error && <p className="text-sm text-destructive">{error}</p>}
-                        <Button type="submit" disabled={isLoading}>
-                            {isLoading ? "Logging in..." : "Login"}
-                        </Button>
+                        {error && <div className="text-sm text-red-500">{error}</div>}
+                        <Button type="submit">{isLoading ? "Logging in..." : "Login"}</Button>
                     </form>
                 </CardContent>
             </Card>

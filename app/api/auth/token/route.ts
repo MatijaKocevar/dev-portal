@@ -8,20 +8,67 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const grant_type = formData.get("grant_type");
 
-    const body = new URLSearchParams();
-    body.append("client_id", CLIENT_ID!);
-    body.append("grant_type", grant_type as string);
-
-    if (grant_type === "password") {
-        body.append("username", formData.get("username") as string);
-        body.append("password", formData.get("password") as string);
-    } else if (grant_type === "refresh_token") {
+    if (grant_type === "refresh_token") {
         const refreshToken = request.cookies.get("refresh_token")?.value;
+        
         if (!refreshToken) {
             return NextResponse.json({ error: "No refresh token" }, { status: 401 });
         }
+        
+        const body = new URLSearchParams();
+        body.append("client_id", CLIENT_ID!);
+        body.append("grant_type", "refresh_token");
         body.append("refresh_token", refreshToken);
+
+        const response = await fetch(
+            `${KEYCLOAK_URL}/realms/${KEYCLOAK_REALM}/protocol/openid-connect/token`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: body.toString(),
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            return NextResponse.json(data, { status: response.status });
+        }
+
+        const cookieOptions = {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict" as const,
+            path: "/"
+        };
+
+        const res = NextResponse.json({
+            access_token: data.access_token,
+            expires_in: data.expires_in
+        });
+
+        res.cookies.set("access_token", data.access_token, {
+            ...cookieOptions,
+            maxAge: data.expires_in
+        });
+
+        if (data.refresh_token) {
+            res.cookies.set("refresh_token", data.refresh_token, {
+                ...cookieOptions,
+                maxAge: data.refresh_expires_in
+            });
+        }
+
+        return res;
     }
+
+    const body = new URLSearchParams();
+    body.append("client_id", CLIENT_ID!);
+    body.append("grant_type", "password");
+    body.append("username", formData.get("username") as string);
+    body.append("password", formData.get("password") as string);
 
     const response = await fetch(
         `${KEYCLOAK_URL}/realms/${KEYCLOAK_REALM}/protocol/openid-connect/token`,
@@ -40,25 +87,29 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(data, { status: response.status });
     }
 
-    const oneDay = 24 * 60 * 60 * 1000;
     const cookieOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict" as const,
-        path: "/",
+        path: "/"
     };
 
-    const res = NextResponse.json({ success: true, expiresIn: data.expires_in });
+    const res = NextResponse.json({
+        access_token: data.access_token,
+        expires_in: data.expires_in
+    });
 
     res.cookies.set("access_token", data.access_token, {
         ...cookieOptions,
-        maxAge: data.expires_in * 1000,
+        maxAge: data.expires_in
     });
 
-    res.cookies.set("refresh_token", data.refresh_token, {
-        ...cookieOptions,
-        maxAge: oneDay * 30,
-    });
+    if (data.refresh_token) {
+        res.cookies.set("refresh_token", data.refresh_token, {
+            ...cookieOptions,
+            maxAge: data.refresh_expires_in
+        });
+    }
 
     return res;
 }

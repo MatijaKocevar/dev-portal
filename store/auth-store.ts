@@ -1,104 +1,177 @@
 import { create } from "zustand";
 
-type AuthStore = {
-    isAuthenticated: boolean;
+interface AuthResponseDTO {
+    access_token: string;
+    expires_in: number;
+}
+
+interface TokenResponse {
+    accessToken: string;
     expiresIn: number;
-    refreshTimer: ReturnType<typeof setInterval> | null;
-    setAuthenticated: (value: boolean) => void;
-    login: (username: string, password: string) => Promise<void>;
+}
+
+interface LoginCredentials {
+    username: string;
+    password: string;
+}
+
+const mapAuthResponse = (dto: AuthResponseDTO): TokenResponse => ({
+    accessToken: dto.access_token,
+    expiresIn: dto.expires_in,
+});
+
+interface AuthState {
+    accessToken: string | null;
+    isAuthenticated: boolean;
+    isLoading: boolean;
+    login: (credentials: LoginCredentials) => Promise<void>;
     logout: () => Promise<void>;
     refresh: () => Promise<void>;
-    startRefreshTimer: () => void;
+    refreshTimer: number | null;
+    startRefreshTimer: (expiresIn: number) => void;
     stopRefreshTimer: () => void;
-};
+}
 
-export const useAuthStore = create<AuthStore>((set, get) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
+    accessToken: null,
     isAuthenticated: false,
+    isLoading: true,
     refreshTimer: null,
-    expiresIn: 300,
-    setAuthenticated: (value: boolean) => {
-        set({ isAuthenticated: value });
 
-        if (value) {
-            get().startRefreshTimer();
-        } else {
-            get().stopRefreshTimer();
-        }
-    },
+    startRefreshTimer: (expiresIn: number) => {
+        const { refreshTimer, refresh } = get();
 
-    startRefreshTimer: () => {
-        const currentTimer = get().refreshTimer;
-        const { expiresIn } = get();
-
-        if (currentTimer) {
-            clearInterval(currentTimer);
+        if (refreshTimer) {
+            window.clearTimeout(refreshTimer);
         }
 
-        const timer = setInterval(async () => {
-            try {
-                await get().refresh();
-            } catch {
-                get().stopRefreshTimer();
-                set({ isAuthenticated: false });
-            }
-        }, (expiresIn - 30) * 1000);
+        if (!expiresIn || expiresIn <= 0) {
+            return;
+        }
+
+        const refreshDelay = Math.max(0, expiresIn - 30) * 1000;
+        const timer = window.setTimeout(() => {
+            void refresh();
+        }, refreshDelay);
 
         set({ refreshTimer: timer });
     },
 
     stopRefreshTimer: () => {
-        const currentTimer = get().refreshTimer;
+        const { refreshTimer } = get();
 
-        if (currentTimer) {
-            clearInterval(currentTimer);
+        if (refreshTimer) {
+            window.clearTimeout(refreshTimer);
             set({ refreshTimer: null });
         }
     },
 
-    login: async (username: string, password: string) => {
-        const response = await fetch("/api/auth/token", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: new URLSearchParams({
-                grant_type: "password",
-                username,
-                password,
-            }),
-        });
+    refresh: async () => {
+        const { isLoading } = get();
+        if (isLoading) return;
 
-        if (!response.ok) {
-            throw new Error("Invalid credentials");
+        set({ isLoading: true });
+
+        try {
+            const response = await fetch("/api/auth/token", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams({
+                    grant_type: "refresh_token",
+                }),
+                credentials: "include",
+            });
+
+            if (!response.ok) {
+                throw new Error("Token refresh failed");
+            }
+
+            const dto = await response.json();
+            const data = mapAuthResponse(dto);
+
+            set({
+                accessToken: data.accessToken,
+                isAuthenticated: true,
+                isLoading: false,
+            });
+
+            get().startRefreshTimer(data.expiresIn);
+        } catch {
+            get().stopRefreshTimer();
+            set({
+                accessToken: null,
+                isAuthenticated: false,
+                isLoading: false,
+            });
+
+            if (window.location.pathname !== "/login") {
+                window.location.href = "/login";
+            }
         }
-
-        set({ isAuthenticated: true });
-        get().startRefreshTimer();
     },
 
-    refresh: async () => {
-        const response = await fetch("/api/auth/token", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: new URLSearchParams({
-                grant_type: "refresh_token",
-            }),
-        });
+    login: async ({ username, password }: LoginCredentials) => {
+        set({ isLoading: true });
 
-        if (!response.ok) {
-            get().stopRefreshTimer();
-            set({ isAuthenticated: false });
-            throw new Error("Failed to refresh token");
+        try {
+            const response = await fetch("/api/auth/token", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams({
+                    grant_type: "password",
+                    username,
+                    password,
+                }),
+                credentials: "include",
+            });
+
+            if (!response.ok) {
+                throw new Error("Login failed");
+            }
+
+            const dto = await response.json();
+            const data = mapAuthResponse(dto);
+
+            set({
+                accessToken: data.accessToken,
+                isAuthenticated: true,
+                isLoading: false,
+            });
+
+            get().startRefreshTimer(data.expiresIn);
+        } catch {
+            set({
+                accessToken: null,
+                isAuthenticated: false,
+                isLoading: false,
+            });
+            throw new Error("Login failed");
         }
-
-        set({ isAuthenticated: true });
     },
 
     logout: async () => {
-        await fetch("/api/auth/logout", { method: "POST" });
+        set({ isLoading: true });
         get().stopRefreshTimer();
-        set({ isAuthenticated: false });
+
+        try {
+            await fetch("/api/auth/logout", {
+                method: "POST",
+                credentials: "include",
+            });
+        } finally {
+            set({
+                accessToken: null,
+                isAuthenticated: false,
+                isLoading: false,
+            });
+
+            if (window.location.pathname !== "/login") {
+                window.location.href = "/login";
+            }
+        }
     },
 }));
