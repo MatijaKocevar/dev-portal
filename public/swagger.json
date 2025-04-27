@@ -11,7 +11,7 @@
       "description": "Local development server"
     },
     {
-      "url": "dev-portal-management.vercel.app/api",
+      "url": "https://dev-portal-management.vercel.app/api",
       "description": "Staging server"
     }
   ],
