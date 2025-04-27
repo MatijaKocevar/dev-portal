@@ -40,10 +40,10 @@ export default function Page() {
     });
 
     const [endpoints] = useState<Endpoint[]>([
-        { name: "FRONTEND", serverUrl: "https://localhost:5173" },
-        { name: "BACKEND", healthUrl: "http://localhost:5000/api/v1/health" },
-        { name: "KEYCLOAK", healthUrl: "http://localhost:9000/health" },
-        { name: "AGENT", healthUrl: "http://localhost:5001/api/agent/health" },
+        { name: "FRONTEND", serverUrl: process.env.NEXT_PUBLIC_SERVICE_FRONTEND_URL },
+        { name: "BACKEND", healthUrl: process.env.NEXT_PUBLIC_SERVICE_BACKEND_URL },
+        { name: "KEYCLOAK", healthUrl: process.env.NEXT_PUBLIC_SERVICE_KEYCLOAK_URL },
+        { name: "AGENT", healthUrl: process.env.NEXT_PUBLIC_SERVICE_AGENT_URL },
     ]);
 
     useEffect(() => {
