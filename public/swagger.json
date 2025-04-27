@@ -9,117 +9,20 @@
     {
       "url": "http://localhost:3000/api",
       "description": "Local development server"
+    },
+    {
+      "url": "dev-portal-management.vercel.app/api",
+      "description": "Staging server"
     }
   ],
-  "paths": {
-    "/assets/units": {
-      "get": {
-        "operationId": "get-assets-units",
-        "summary": "",
-        "description": "",
-        "tags": [
-          "Assets"
-        ],
-        "responses": {}
-      }
-    },
-    "/auth/logout": {
-      "post": {
-        "operationId": "post-auth-logout",
-        "summary": "",
-        "description": "",
-        "tags": [
-          "Auth"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {}
-          }
-        },
-        "responses": {}
-      }
-    },
-    "/auth/token": {
-      "post": {
-        "operationId": "post-auth-token",
-        "summary": "",
-        "description": "",
-        "tags": [
-          "Auth"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {}
-          }
-        },
-        "responses": {}
-      }
-    },
-    "/dashboard": {
-      "get": {
-        "operationId": "get-dashboard",
-        "summary": "",
-        "description": "",
-        "tags": [
-          "Dashboard"
-        ],
-        "responses": {}
-      }
-    },
-    "/dashboard/accepted-bids": {
-      "get": {
-        "operationId": "get-dashboard-accepted-bids",
-        "summary": "",
-        "description": "",
-        "tags": [
-          "Dashboard"
-        ],
-        "responses": {}
-      }
-    },
-    "/dashboard/battery-status": {
-      "get": {
-        "operationId": "get-dashboard-battery-status",
-        "summary": "",
-        "description": "",
-        "tags": [
-          "Dashboard"
-        ],
-        "responses": {}
-      }
-    },
-    "/dashboard/flexibility": {
-      "get": {
-        "operationId": "get-dashboard-flexibility",
-        "summary": "",
-        "description": "",
-        "tags": [
-          "Dashboard"
-        ],
-        "responses": {}
-      }
-    },
-    "/dashboard/frequency": {
-      "get": {
-        "operationId": "get-dashboard-frequency",
-        "summary": "",
-        "description": "",
-        "tags": [
-          "Dashboard"
-        ],
-        "responses": {}
-      }
-    },
-    "/dashboard/power": {
-      "get": {
-        "operationId": "get-dashboard-power",
-        "summary": "",
-        "description": "",
-        "tags": [
-          "Dashboard"
-        ],
-        "responses": {}
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
-  }
+  },
+  "paths": {}
 }
