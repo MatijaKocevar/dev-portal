@@ -5,7 +5,8 @@ const allowedOrigins = [
     "https://dev-portal-management.vercel.app",
     "https://staging.reduxi.energy",
     "http://localhost:5173",
-    "https://localhost:5173"
+    "https://localhost:5173",
+    "http://localhost:3000"
 ];
 
 export function middleware(request: NextRequest) {
