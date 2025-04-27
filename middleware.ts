@@ -1,22 +1,34 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+const allowedOrigins = [
+    "https://dev-portal-management.vercel.app",
+    "https://staging.reduxi.energy",
+    "http://localhost:5173",
+    "https://localhost:5173"
+];
+
 export function middleware(request: NextRequest) {
-    const origin =
-        process.env.NEXT_PUBLIC_FRONTEND_URL || "https://dev-portal-management.vercel.app";
+    const origin = request.headers.get("origin");
+    
+    if (origin && !allowedOrigins.includes(origin)) {
+        return new NextResponse(null, {
+            status: 403,
+            statusText: "Forbidden",
+        });
+    }
 
     if (request.method === "OPTIONS") {
-        const response = new NextResponse(null, {
+        return new NextResponse(null, {
             status: 204,
             headers: {
-                "Access-Control-Allow-Origin": origin,
+                "Access-Control-Allow-Origin": origin || "https://staging.reduxi.energy",
                 "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
                 "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
                 "Access-Control-Allow-Credentials": "true",
                 "Access-Control-Max-Age": "86400",
             },
         });
-        return response;
     }
 
     return NextResponse.next();

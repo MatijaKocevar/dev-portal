@@ -1,18 +1,25 @@
 import type { NextConfig } from "next";
 
+const allowedOrigins = [
+    "https://dev-portal-management.vercel.app",
+    "https://staging.reduxi.energy",
+    "http://localhost:5173",
+    "https://localhost:5173",
+];
+
 const nextConfig: NextConfig = {
     poweredByHeader: false,
     async headers() {
-        const origin =
-            process.env.NEXT_PUBLIC_FRONTEND_URL || "https://dev-portal-management.vercel.app";
-
         return [
             {
                 source: "/:path*",
                 headers: [
                     {
                         key: "Access-Control-Allow-Origin",
-                        value: origin,
+                        value: allowedOrigins.includes(process.env.NEXT_PUBLIC_FRONTEND_URL || "")
+                            ? process.env.NEXT_PUBLIC_FRONTEND_URL ||
+                              "https://staging.reduxi.energy"
+                            : "https://staging.reduxi.energy",
                     },
                     {
                         key: "Access-Control-Allow-Methods",
@@ -23,6 +30,7 @@ const nextConfig: NextConfig = {
                         value: "Content-Type, Authorization, Accept",
                     },
                     { key: "Access-Control-Allow-Credentials", value: "true" },
+                    { key: "Access-Control-Max-Age", value: "86400" },
                 ],
             },
         ];
