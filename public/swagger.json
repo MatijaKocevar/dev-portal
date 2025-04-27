@@ -15,8 +15,8 @@
     "/assets/units": {
       "get": {
         "operationId": "get-assets-units",
-        "summary": "Authenticate as a user.",
-        "description": "Login a user",
+        "summary": "",
+        "description": "",
         "tags": [
           "Assets"
         ],
