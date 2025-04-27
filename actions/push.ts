@@ -1,7 +1,8 @@
 "use server";
 
+import { PushSubscription } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-import { PushSubscription } from "@/lib/generated/prisma/index";
+import webpush from "web-push";
 
 export async function savePushSubscription(subscription: {
     endpoint: string;
@@ -32,7 +33,6 @@ export async function getAllSubscriptions() {
 
 export async function sendPushNotification(title: string, body: string) {
     const subscriptions = await getAllSubscriptions();
-    const webpush = require("web-push");
     const { VAPID_CONFIG } = require("@/lib/vapid");
 
     webpush.setVapidDetails(VAPID_CONFIG.subject, VAPID_CONFIG.publicKey, VAPID_CONFIG.privateKey);
@@ -70,7 +70,6 @@ export async function sendTestNotification(
     body: string,
     url?: string
 ) {
-    const webpush = require("web-push");
     const { VAPID_CONFIG } = require("@/lib/vapid");
 
     webpush.setVapidDetails(VAPID_CONFIG.subject, VAPID_CONFIG.publicKey, VAPID_CONFIG.privateKey);
