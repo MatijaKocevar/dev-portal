@@ -14,6 +14,7 @@ const eslintConfig = [...compat.extends("next/core-web-vitals", "next/typescript
 const rules = {
     "@typescript-eslint/no-require-imports": "off",
     "react-hooks/exhaustive-deps": "off",
+    "@typescript-eslint/no-explicit-any": "off",
 };
 
 eslintConfig.push({
