@@ -19,110 +19,596 @@
     "/assets/units": {
       "get": {
         "operationId": "get-assets-units",
-        "summary": "",
+        "summary": "Get all units.",
         "description": "",
         "tags": [
           "Assets"
         ],
-        "responses": {}
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "function": {
+                      "type": "string"
+                    },
+                    "energySupplier": {
+                      "type": "string"
+                    },
+                    "marketParticipant": {
+                      "type": "string"
+                    },
+                    "aggregator": {
+                      "type": "string"
+                    },
+                    "offeredServices": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "owner": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "zipCode": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "coordinates": {
+                      "type": "object",
+                      "properties": {
+                        "lat": {
+                          "type": "number"
+                        },
+                        "lng": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "grid": {
+                      "type": "object",
+                      "properties": {
+                        "a": {
+                          "type": "string"
+                        },
+                        "b": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "pv": {
+                      "type": "boolean"
+                    },
+                    "battery": {
+                      "type": "boolean"
+                    },
+                    "hvac": {
+                      "type": "boolean"
+                    },
+                    "evse": {
+                      "type": "boolean"
+                    },
+                    "flexUpMw": {
+                      "type": "number"
+                    },
+                    "flexDownMw": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/auth/logout": {
       "post": {
         "operationId": "post-auth-logout",
-        "summary": "",
+        "summary": "Logout user.",
         "description": "",
         "tags": [
           "Auth"
         ],
+        "parameters": [],
         "requestBody": {
           "content": {
-            "application/json": {}
+            "application/json": {
+              "schema": {}
+            }
           }
         },
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/auth/token": {
       "post": {
         "operationId": "post-auth-token",
-        "summary": "",
+        "summary": "Login user.",
         "description": "",
         "tags": [
           "Auth"
         ],
+        "parameters": [],
         "requestBody": {
           "content": {
-            "application/json": {}
+            "application/json": {
+              "schema": {}
+            }
           }
         },
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    },
+                    "expires_in": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/dashboard": {
       "get": {
         "operationId": "get-dashboard",
-        "summary": "",
+        "summary": "Get all dashboard data.",
         "description": "",
         "tags": [
           "Dashboard"
         ],
-        "responses": {}
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "acceptedBids": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "batteryStatus": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "flexibility": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "power": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "time": {
+                            "type": "string"
+                          },
+                          "grid": {
+                            "type": "number"
+                          },
+                          "consumption": {
+                            "type": "number"
+                          },
+                          "production": {
+                            "type": "number"
+                          },
+                          "baseline": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "frequency": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "time": {
+                            "type": "string"
+                          },
+                          "frequency": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/dashboard/accepted-bids": {
       "get": {
         "operationId": "get-dashboard-accepted-bids",
-        "summary": "",
+        "summary": "Get accepted bids data.",
         "description": "",
         "tags": [
           "Dashboard"
         ],
-        "responses": {}
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
       }
     },
     "/dashboard/battery-status": {
       "get": {
         "operationId": "get-dashboard-battery-status",
-        "summary": "",
+        "summary": "Get battery status data.",
         "description": "",
         "tags": [
           "Dashboard"
         ],
-        "responses": {}
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
       }
     },
     "/dashboard/flexibility": {
       "get": {
         "operationId": "get-dashboard-flexibility",
-        "summary": "",
+        "summary": "Get flexibility data.",
         "description": "",
         "tags": [
           "Dashboard"
         ],
-        "responses": {}
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
       }
     },
     "/dashboard/frequency": {
       "get": {
         "operationId": "get-dashboard-frequency",
-        "summary": "",
+        "summary": "Get frequency data.",
         "description": "",
         "tags": [
           "Dashboard"
         ],
-        "responses": {}
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "time": {
+                      "type": "string"
+                    },
+                    "frequency": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/dashboard/power": {
       "get": {
         "operationId": "get-dashboard-power",
-        "summary": "",
+        "summary": "Get power data.",
         "description": "",
         "tags": [
           "Dashboard"
         ],
-        "responses": {}
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "time": {
+                      "type": "string"
+                    },
+                    "grid": {
+                      "type": "number"
+                    },
+                    "consumption": {
+                      "type": "number"
+                    },
+                    "production": {
+                      "type": "number"
+                    },
+                    "baseline": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/push/send": {
+      "post": {
+        "operationId": "post-push-send",
+        "summary": "Send push notification.",
+        "description": "",
+        "tags": [
+          "Push"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/push/subscribe": {
+      "post": {
+        "operationId": "post-push-subscribe",
+        "summary": "Subscribe to push notifications.",
+        "description": "",
+        "tags": [
+          "Push"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "endpoint": {
+                      "type": "string"
+                    },
+                    "p256dh": {
+                      "type": "string"
+                    },
+                    "auth": {
+                      "type": "string"
+                    },
+                    "userId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/push/test": {
+      "post": {
+        "operationId": "post-push-test",
+        "summary": "Send test push notification.",
+        "description": "",
+        "tags": [
+          "Push"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/push/web-push-key": {
+      "get": {
+        "operationId": "get-push-web-push-key",
+        "summary": "Get an VAPID key.",
+        "description": "",
+        "tags": [
+          "Push"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/push/unsubscribe/[id]": {
+      "delete": {
+        "operationId": "delete-push-unsubscribe-[id]",
+        "summary": "Unsubscribe from push notifications.",
+        "description": "",
+        "tags": [
+          "Push"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
       }
     }
   }

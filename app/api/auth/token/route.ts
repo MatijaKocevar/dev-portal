@@ -1,9 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextRequest, NextResponse } from "next/server";
 
 const KEYCLOAK_URL = process.env.NEXT_PUBLIC_KEYCLOAK_URL;
 const KEYCLOAK_REALM = process.env.NEXT_PUBLIC_AUTH_REALM;
 const CLIENT_ID = process.env.NEXT_PUBLIC_AUTH_CLIENT_ID;
 
+type TokenResponse = { access_token: string; expires_in: number };
+
+/**
+ * Login user.
+ * @response: TokenResponse
+ */
 export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const grant_type = formData.get("grant_type");

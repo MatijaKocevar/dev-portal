@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { VAPID_CONFIG } from "@/lib/vapid";
 
+/**
+ * Get an VAPID key.
+ * @response: string
+ */
 export const GET = async () => {
     if (!VAPID_CONFIG.publicKey) {
         return new NextResponse("VAPID public key not configured", { status: 500 });

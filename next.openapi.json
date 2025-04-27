@@ -16,7 +16,7 @@
         }
     ],
     "apiDir": "./app/api",
-    "schemaDir": "./src",
+    "schemaDir": "./app",
     "docsUrl": "api-docs",
     "ui": "swagger",
     "outputFile": "swagger.json",

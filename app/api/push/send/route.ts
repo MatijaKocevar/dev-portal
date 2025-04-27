@@ -1,7 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/lib/auth";
 import { sendPushNotification } from "@/actions/push";
 
+type SendNotificationResponse = {
+    message: string;
+};
+
+/**
+ * Send push notification.
+ * @auth: bearer
+ * @response: SendNotificationResponse
+ */
 export const POST = withAuth(async (req: NextRequest) => {
     const { title, body } = await req.json();
 

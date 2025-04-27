@@ -1,16 +1,26 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { NextRequest, NextResponse } from "next/server";
 import { decodeJwt } from "jose";
 import { withAuth } from "@/lib/auth";
 import { VAPID_CONFIG } from "@/lib/vapid";
 import { savePushSubscription } from "@/actions/push";
 
-export const GET = async () => {
-    if (!VAPID_CONFIG.publicKey) {
-        return new NextResponse("VAPID public key not configured", { status: 500 });
-    }
-    return new NextResponse(VAPID_CONFIG.publicKey);
+type VapidKeyResponse = string;
+
+type SubscriptionResponse = {
+    id: string;
+    endpoint: string;
+    p256dh: string;
+    auth: string;
+    userId: string;
 };
 
+/**
+ * Subscribe to push notifications.
+ * @auth: bearer
+ * @response: SubscriptionResponse
+ */
 export const POST = withAuth(async (req: NextRequest) => {
     try {
         const subscription = await req.json();
