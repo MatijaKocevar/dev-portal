@@ -24,7 +24,7 @@
             }
         }
     },
-    "apiDir": "./src/app/api",
+    "apiDir": "./app/api",
     "schemaDir": "./src",
     "docsUrl": "api-docs",
     "ui": "swagger",
