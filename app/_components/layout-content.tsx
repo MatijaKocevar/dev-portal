@@ -48,13 +48,13 @@ export function LayoutContent({
         <SidebarProvider defaultOpen={defaultSidebarState}>
             <div className="relative flex min-h-screen max-h-screen w-full overflow-hidden">
                 <AppSidebar />
-                <main className="flex-1 overflow-auto">
+                <main className="flex-1 overflow-hidden flex flex-col">
                     <div className="sticky top-0 z-10 w-full border-b bg-background h-16 px-4 flex items-center gap-3">
                         <SidebarTrigger />
                         <h1 className="text-xl font-semibold">{pageTitle}</h1>
                     </div>
                     <AuthCheck>
-                        <div className="p-6">{children}</div>
+                        <div className="p-6 flex-1 overflow-auto">{children}</div>
                     </AuthCheck>
                 </main>
             </div>

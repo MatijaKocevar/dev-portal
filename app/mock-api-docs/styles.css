@@ -1,0 +1,138 @@
+.information-container {
+    display: none !important;
+}
+
+.swagger-ui .wrapper {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.swagger-ui {
+    color: var(--foreground) !important;
+}
+
+.swagger-ui .scheme-container {
+    background: var(--background) !important;
+}
+
+.swagger-ui select,
+.swagger-ui input {
+    background: var(--background) !important;
+    color: var(--foreground) !important;
+    border-color: var(--border) !important;
+}
+
+.swagger-ui .opblock .opblock-summary-description,
+.swagger-ui .opblock .opblock-summary-path {
+    color: var(--foreground) !important;
+}
+
+.swagger-ui .opblock .opblock-section-header {
+    background: #131b23 !important;
+    color: var(--foreground) !important;
+}
+
+.swagger-ui .opblock-description-wrapper p,
+.swagger-ui .opblock-external-docs-wrapper p,
+.swagger-ui .opblock-title_normal p {
+    color: var(--foreground) !important;
+}
+
+.swagger-ui .response-col_status {
+    color: var(--foreground) !important;
+}
+
+.swagger-ui table tbody tr td {
+    color: var(--foreground) !important;
+    background: var(--background) !important;
+    border-color: var(--border) !important;
+}
+
+.swagger-ui .prop-type {
+    color: var(--primary) !important;
+}
+
+.swagger-ui .opblock-title span {
+    color: var(--primary) !important;
+}
+
+.swagger-ui .try-out button {
+    color: var(--primary) !important;
+}
+
+.swagger-ui .tab li button {
+    color: var(--foreground) !important;
+}
+
+.swagger-ui .tab li button.active {
+    color: var(--primary) !important;
+}
+
+.swagger-ui section.models {
+    background: var(--background) !important;
+    border-color: var(--border) !important;
+}
+
+.swagger-ui section.models h4 {
+    color: var(--foreground) !important;
+}
+
+.swagger-ui .model-box {
+    background: var(--background) !important;
+}
+
+.swagger-ui .model {
+    color: var(--foreground) !important;
+}
+
+.swagger-ui .opblock-tag {
+    color: var(--foreground) !important;
+    border-color: var(--border) !important;
+}
+
+.swagger-ui .opblock .opblock-summary {
+    border-color: var(--border) !important;
+}
+
+.swagger-ui section.models .model-container {
+    background: var(--background) !important;
+    border-color: var(--border) !important;
+}
+
+.swagger-ui a {
+    color: var(--primary) !important;
+}
+
+.swagger-ui .btn-group button {
+    color: var(--foreground) !important;
+}
+
+.swagger-ui h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+td,
+path {
+    fill: var(--primary) !important;
+    color: var(--primary) !important;
+}
+
+.swagger-ui .opblock-tag {
+    padding-top: 0 !important;
+}
+
+.swagger-ui .opblock-tag {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    font-weight: bold !important;
+    font-size: 22px !important;
+}
+
+.scheme-container {
+    /* display: none !important; */
+    padding: 0 0 !important;
+}
