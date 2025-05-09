@@ -1,7 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextResponse } from "next/server";
-import { unitsData } from "../_data";
+import { unitsData, Unit } from "../_data";
 
-export async function GET(request: Request, { params }: Readonly<{ params: Promise<{ id: string }> }>) {
+type UnitParams = {
+    id: string;
+};
+
+/**
+ * Get unit by id.
+ * @auth: bearer
+ * @params: UnitParams
+ * @response: Unit[]
+ */
+export async function GET(
+    request: Request,
+    { params }: Readonly<{ params: Promise<{ id: string }> }>
+) {
     const { id } = await params;
     const unit = unitsData().find((unit) => unit.id === id);
 

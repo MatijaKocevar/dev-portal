@@ -65,6 +65,17 @@
                         "type": "string"
                       }
                     },
+                    "offeredProducts": {
+                      "type": "object",
+                      "properties": {
+                        "vpp": {
+                          "type": "boolean"
+                        },
+                        "energyCommunity": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
                     "owner": {
                       "type": "string"
                     },
@@ -80,6 +91,12 @@
                     "country": {
                       "type": "string"
                     },
+                    "latitude": {
+                      "type": "string"
+                    },
+                    "longitude": {
+                      "type": "string"
+                    },
                     "coordinates": {
                       "type": "object",
                       "properties": {
@@ -91,13 +108,28 @@
                         }
                       }
                     },
+                    "available": {
+                      "type": "boolean"
+                    },
                     "grid": {
+                      "type": "boolean"
+                    },
+                    "gridDetails": {
                       "type": "object",
                       "properties": {
-                        "a": {
+                        "maxImport": {
                           "type": "string"
                         },
-                        "b": {
+                        "maxExport": {
+                          "type": "string"
+                        },
+                        "phaseACurrent": {
+                          "type": "string"
+                        },
+                        "phaseBCurrent": {
+                          "type": "string"
+                        },
+                        "phaseCCurrent": {
                           "type": "string"
                         }
                       }
@@ -105,8 +137,33 @@
                     "pv": {
                       "type": "boolean"
                     },
+                    "pvDetails": {
+                      "type": "object",
+                      "properties": {
+                        "peakPower": {
+                          "type": "string"
+                        },
+                        "maxExport": {
+                          "type": "string"
+                        }
+                      }
+                    },
                     "battery": {
                       "type": "boolean"
+                    },
+                    "batteryDetails": {
+                      "type": "object",
+                      "properties": {
+                        "totalCapacity": {
+                          "type": "string"
+                        },
+                        "maxImport": {
+                          "type": "string"
+                        },
+                        "maxExport": {
+                          "type": "string"
+                        }
+                      }
                     },
                     "hvac": {
                       "type": "boolean"
@@ -114,11 +171,295 @@
                     "evse": {
                       "type": "boolean"
                     },
+                    "evseDetails": {
+                      "type": "object",
+                      "properties": {
+                        "maxImportPower": {
+                          "type": "string"
+                        }
+                      }
+                    },
                     "flexUpMw": {
                       "type": "number"
                     },
                     "flexDownMw": {
                       "type": "number"
+                    },
+                    "dso": {
+                      "type": "string"
+                    },
+                    "tso": {
+                      "type": "string"
+                    },
+                    "measurementPlaceNo": {
+                      "type": "string"
+                    },
+                    "gsrn": {
+                      "type": "string"
+                    },
+                    "meterNo": {
+                      "type": "string"
+                    },
+                    "alerts": {
+                      "type": "string"
+                    },
+                    "highestAlertImpact": {
+                      "type": "string"
+                    },
+                    "installationDate": {
+                      "type": "string"
+                    },
+                    "lastUpdateTime": {
+                      "type": "string"
+                    },
+                    "deactivatedTime": {
+                      "type": "string"
+                    },
+                    "rampUpTime": {
+                      "type": "string"
+                    },
+                    "rampDownTime": {
+                      "type": "string"
+                    },
+                    "responseDelayTime": {
+                      "type": "string"
+                    },
+                    "regulationType": {
+                      "type": "string"
+                    },
+                    "siteId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assets/units/[id]": {
+      "get": {
+        "operationId": "get-assets-units-[id]",
+        "summary": "Get unit by id.",
+        "description": "",
+        "tags": [
+          "Assets"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "function": {
+                      "type": "string"
+                    },
+                    "energySupplier": {
+                      "type": "string"
+                    },
+                    "marketParticipant": {
+                      "type": "string"
+                    },
+                    "aggregator": {
+                      "type": "string"
+                    },
+                    "offeredServices": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "offeredProducts": {
+                      "type": "object",
+                      "properties": {
+                        "vpp": {
+                          "type": "boolean"
+                        },
+                        "energyCommunity": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "owner": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "zipCode": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "latitude": {
+                      "type": "string"
+                    },
+                    "longitude": {
+                      "type": "string"
+                    },
+                    "coordinates": {
+                      "type": "object",
+                      "properties": {
+                        "lat": {
+                          "type": "number"
+                        },
+                        "lng": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "available": {
+                      "type": "boolean"
+                    },
+                    "grid": {
+                      "type": "boolean"
+                    },
+                    "gridDetails": {
+                      "type": "object",
+                      "properties": {
+                        "maxImport": {
+                          "type": "string"
+                        },
+                        "maxExport": {
+                          "type": "string"
+                        },
+                        "phaseACurrent": {
+                          "type": "string"
+                        },
+                        "phaseBCurrent": {
+                          "type": "string"
+                        },
+                        "phaseCCurrent": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "pv": {
+                      "type": "boolean"
+                    },
+                    "pvDetails": {
+                      "type": "object",
+                      "properties": {
+                        "peakPower": {
+                          "type": "string"
+                        },
+                        "maxExport": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "battery": {
+                      "type": "boolean"
+                    },
+                    "batteryDetails": {
+                      "type": "object",
+                      "properties": {
+                        "totalCapacity": {
+                          "type": "string"
+                        },
+                        "maxImport": {
+                          "type": "string"
+                        },
+                        "maxExport": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "hvac": {
+                      "type": "boolean"
+                    },
+                    "evse": {
+                      "type": "boolean"
+                    },
+                    "evseDetails": {
+                      "type": "object",
+                      "properties": {
+                        "maxImportPower": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "flexUpMw": {
+                      "type": "number"
+                    },
+                    "flexDownMw": {
+                      "type": "number"
+                    },
+                    "dso": {
+                      "type": "string"
+                    },
+                    "tso": {
+                      "type": "string"
+                    },
+                    "measurementPlaceNo": {
+                      "type": "string"
+                    },
+                    "gsrn": {
+                      "type": "string"
+                    },
+                    "meterNo": {
+                      "type": "string"
+                    },
+                    "alerts": {
+                      "type": "string"
+                    },
+                    "highestAlertImpact": {
+                      "type": "string"
+                    },
+                    "installationDate": {
+                      "type": "string"
+                    },
+                    "lastUpdateTime": {
+                      "type": "string"
+                    },
+                    "deactivatedTime": {
+                      "type": "string"
+                    },
+                    "rampUpTime": {
+                      "type": "string"
+                    },
+                    "rampDownTime": {
+                      "type": "string"
+                    },
+                    "responseDelayTime": {
+                      "type": "string"
+                    },
+                    "regulationType": {
+                      "type": "string"
+                    },
+                    "siteId": {
+                      "type": "string"
                     }
                   }
                 }
@@ -175,7 +516,19 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {}
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "nullable": false
+                  },
+                  "password": {
+                    "type": "string",
+                    "nullable": false
+                  }
+                }
+              }
             }
           }
         },
