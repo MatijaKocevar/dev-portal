@@ -11,7 +11,7 @@ const SwaggerUI = dynamic(() => import("swagger-ui-react"), {
 export default async function ApiDocsPage() {
     return (
         <section>
-            <SwaggerUI url="/swagger.json" />
+            <SwaggerUI url="https://staging.reduxi.energy/docs/api" />
         </section>
     );
 }
