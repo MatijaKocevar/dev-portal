@@ -238,9 +238,9 @@
         }
       }
     },
-    "/assets/units/[id]": {
+    "/assets/units/{id}": {
       "get": {
-        "operationId": "get-assets-units-[id]",
+        "operationId": "get-assets-units-{id}",
         "summary": "Get unit by id.",
         "description": "",
         "tags": [
@@ -253,12 +253,11 @@
         ],
         "parameters": [
           {
-            "in": "query",
+            "in": "path",
             "name": "id",
             "schema": {
               "type": "string"
-            },
-            "required": true
+            }
           }
         ],
         "responses": {
@@ -480,9 +479,7 @@
         "parameters": [],
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {}
-            }
+            "application/json": {}
           }
         },
         "responses": {
@@ -515,21 +512,7 @@
         "parameters": [],
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "username": {
-                    "type": "string",
-                    "nullable": false
-                  },
-                  "password": {
-                    "type": "string",
-                    "nullable": false
-                  }
-                }
-              }
-            }
+            "application/json": {}
           }
         },
         "responses": {
@@ -808,9 +791,7 @@
         "parameters": [],
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {}
-            }
+            "application/json": {}
           }
         },
         "responses": {
@@ -848,9 +829,7 @@
         "parameters": [],
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {}
-            }
+            "application/json": {}
           }
         },
         "responses": {
@@ -900,9 +879,7 @@
         "parameters": [],
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {}
-            }
+            "application/json": {}
           }
         },
         "responses": {
@@ -938,9 +915,9 @@
         }
       }
     },
-    "/push/unsubscribe/[id]": {
+    "/push/unsubscribe/{id}": {
       "delete": {
-        "operationId": "delete-push-unsubscribe-[id]",
+        "operationId": "delete-push-unsubscribe-{id}",
         "summary": "Unsubscribe from push notifications.",
         "description": "",
         "tags": [
