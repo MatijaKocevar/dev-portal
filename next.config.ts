@@ -5,6 +5,7 @@ const allowedOrigins = [
     "https://staging.reduxi.energy",
     "http://localhost:5173",
     "https://localhost:5173",
+    "https://localhost:5000",
 ];
 
 const nextConfig: NextConfig = {

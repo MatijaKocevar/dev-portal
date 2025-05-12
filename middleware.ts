@@ -6,12 +6,15 @@ const allowedOrigins = [
     "https://staging.reduxi.energy",
     "http://localhost:5173",
     "https://localhost:5173",
-    "http://localhost:3000"
+    "https://localhost:3000",
+    "http://localhost:3000",
+    "https://localhost:5000",
+    "http://localhost:5000",
 ];
 
 export function middleware(request: NextRequest) {
     const origin = request.headers.get("origin");
-    
+
     if (origin && !allowedOrigins.includes(origin)) {
         return new NextResponse(null, {
             status: 403,
@@ -23,11 +26,10 @@ export function middleware(request: NextRequest) {
         return new NextResponse(null, {
             status: 204,
             headers: {
-                "Access-Control-Allow-Origin": origin || "https://staging.reduxi.energy",
-                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-                "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "*",
+                "Access-Control-Allow-Headers": "*",
                 "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Max-Age": "86400",
             },
         });
     }
