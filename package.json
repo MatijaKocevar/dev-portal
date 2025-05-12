@@ -3,10 +3,12 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "next dev --turbopack --experimental-https ",
-        "build": "prisma generate && next build",
+        "dev": "npx next-openapi-gen generate && NODE_ENV=development node scripts/update-swagger.js && next dev --turbopack --experimental-https",
+        "build": "npx next-openapi-gen generate && NODE_ENV=production node scripts/update-swagger.js && prisma generate && next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "swagger:dev": "npx next-openapi-gen generate && NODE_ENV=development node scripts/update-swagger.js",
+        "swagger:prod": "npx next-openapi-gen generate && NODE_ENV=production node scripts/update-swagger.js"
     },
     "dependencies": {
         "@prisma/client": "^6.6.0",
