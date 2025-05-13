@@ -7,10 +7,7 @@ export type Unit = {
     marketParticipant: string;
     aggregator: string;
     offeredServices: string[];
-    offeredProducts: {
-        vpp: boolean;
-        energyCommunity: boolean;
-    };
+    offeredProducts: { name: string; active: boolean }[];
     owner: string;
     address: string;
     city: string;
@@ -73,10 +70,10 @@ export const unitsData = (): Unit[] => [
         marketParticipant: "Producer",
         aggregator: "Main Aggregator",
         offeredServices: ["Flex", "Energy Community"],
-        offeredProducts: {
-            vpp: true,
-            energyCommunity: false,
-        },
+        offeredProducts: [
+            { name: "FCR Netherlands", active: true },
+            { name: "aFRR Up Netherlands", active: false },
+        ],
         owner: "John Smith",
         address: "Kraigherjeva ulica 2",
         city: "Lenart v Slovenskih Goricah",
@@ -137,10 +134,10 @@ export const unitsData = (): Unit[] => [
         marketParticipant: "Producer",
         aggregator: "Main Aggregator",
         offeredServices: ["Flex", "Energy Community"],
-        offeredProducts: {
-            vpp: true,
-            energyCommunity: false,
-        },
+        offeredProducts: [
+            { name: "FCR Netherlands", active: true },
+            { name: "aFRR Up Netherlands", active: false },
+        ],
         owner: "Emma Johnson",
         address: "Predstruge 29",
         city: "Videm-Dobrepolj",
@@ -201,10 +198,10 @@ export const unitsData = (): Unit[] => [
         marketParticipant: "Producer",
         aggregator: "Main Aggregator",
         offeredServices: ["Flex", "Energy Community"],
-        offeredProducts: {
-            vpp: true,
-            energyCommunity: false,
-        },
+        offeredProducts: [
+            { name: "FCR Netherlands", active: true },
+            { name: "aFRR Up Netherlands", active: false },
+        ],
         owner: "David Taylor",
         address: "Zgornje Bitnje 137",
         city: "Kranj",

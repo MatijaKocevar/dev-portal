@@ -72,11 +72,6 @@ export const OWNERS = [
     "Jennifer Garcia",
 ] as const;
 
-export const OFFERED_PRODUCTS = {
-    VPP: "FCR Netherlands",
-    ENERGY_COMMUNITY: "aFRR Up Netherlands",
-} as const;
-
 export type UnitFunction = (typeof UNIT_FUNCTIONS)[number];
 export type MarketParticipant = (typeof MARKET_PARTICIPANTS)[number];
 export type AggregatorType = (typeof AGGREGATOR_TYPES)[number];
