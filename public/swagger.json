@@ -62,13 +62,16 @@
                       }
                     },
                     "offeredProducts": {
-                      "type": "object",
-                      "properties": {
-                        "vpp": {
-                          "type": "boolean"
-                        },
-                        "energyCommunity": {
-                          "type": "boolean"
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "active": {
+                            "type": "boolean"
+                          }
                         }
                       }
                     },
@@ -292,13 +295,16 @@
                       }
                     },
                     "offeredProducts": {
-                      "type": "object",
-                      "properties": {
-                        "vpp": {
-                          "type": "boolean"
-                        },
-                        "energyCommunity": {
-                          "type": "boolean"
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "active": {
+                            "type": "boolean"
+                          }
                         }
                       }
                     },

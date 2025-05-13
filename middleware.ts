@@ -26,9 +26,9 @@ export function middleware(request: NextRequest) {
         return new NextResponse(null, {
             status: 204,
             headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "*",
-                "Access-Control-Allow-Headers": "*",
+                "Access-Control-Allow-Origin": origin || "https://staging.reduxi.energy",
+                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
                 "Access-Control-Allow-Credentials": "true",
             },
         });
