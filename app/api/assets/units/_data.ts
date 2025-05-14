@@ -4,7 +4,6 @@ export type Unit = {
     type: string;
     function: string;
     energySupplier: string;
-    marketParticipant: string;
     aggregator: string;
     offeredServices: string[];
     offeredProducts: { name: string; active: boolean }[];
@@ -67,7 +66,6 @@ export const unitsData = (): Unit[] => [
         type: "Unit",
         function: "Generation",
         energySupplier: "Engie",
-        marketParticipant: "Producer",
         aggregator: "Main Aggregator",
         offeredServices: ["Flex", "Energy Community"],
         offeredProducts: [
@@ -131,7 +129,6 @@ export const unitsData = (): Unit[] => [
         type: "Unit",
         function: "Generation",
         energySupplier: "Engie",
-        marketParticipant: "Producer",
         aggregator: "Main Aggregator",
         offeredServices: ["Flex", "Energy Community"],
         offeredProducts: [
@@ -195,7 +192,6 @@ export const unitsData = (): Unit[] => [
         type: "Unit",
         function: "Generation",
         energySupplier: "Engie",
-        marketParticipant: "Producer",
         aggregator: "Main Aggregator",
         offeredServices: ["Flex", "Energy Community"],
         offeredProducts: [

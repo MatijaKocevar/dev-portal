@@ -49,9 +49,6 @@
                     "energySupplier": {
                       "type": "string"
                     },
-                    "marketParticipant": {
-                      "type": "string"
-                    },
                     "aggregator": {
                       "type": "string"
                     },
@@ -280,9 +277,6 @@
                       "type": "string"
                     },
                     "energySupplier": {
-                      "type": "string"
-                    },
-                    "marketParticipant": {
                       "type": "string"
                     },
                     "aggregator": {
