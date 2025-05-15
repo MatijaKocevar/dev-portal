@@ -1,3 +1,5 @@
+import { Country } from "../types/country";
+
 export type Unit = {
     id: string;
     name: string;
@@ -11,7 +13,7 @@ export type Unit = {
     address: string;
     city: string;
     zipCode: string;
-    country: string;
+    country: Country;
     latitude: string;
     longitude: string;
     coordinates: { lat: number; lng: number };
@@ -76,7 +78,12 @@ export const unitsData = (): Unit[] => [
         address: "Kraigherjeva ulica 2",
         city: "Lenart v Slovenskih Goricah",
         zipCode: "2230",
-        country: "Slovenia",
+        country: {
+            id: "497a4cd7-ebc7-44a9-85e3-eb59f154ef5c",
+            code: "SI",
+            name: "Slovenia",
+            visible: true,
+        },
         latitude: "59.3293",
         longitude: "18.0686",
         coordinates: { lat: 53.4808, lng: -2.2426 },
@@ -139,7 +146,12 @@ export const unitsData = (): Unit[] => [
         address: "Predstruge 29",
         city: "Videm-Dobrepolj",
         zipCode: "1312",
-        country: "Slovenia",
+        country: {
+            id: "497a4cd7-ebc7-44a9-85e3-eb59f154ef5c",
+            code: "SI",
+            name: "Slovenia",
+            visible: true,
+        },
         latitude: "59.3293",
         longitude: "18.0686",
         coordinates: { lat: 53.4808, lng: -2.2426 },
@@ -202,7 +214,12 @@ export const unitsData = (): Unit[] => [
         address: "Zgornje Bitnje 137",
         city: "Kranj",
         zipCode: "4000",
-        country: "Slovenia",
+        country: {
+            id: "497a4cd7-ebc7-44a9-85e3-eb59f154ef5c",
+            code: "SI",
+            name: "Slovenia",
+            visible: true,
+        },
         latitude: "59.3293",
         longitude: "18.0686",
         coordinates: { lat: 53.4808, lng: -2.2426 },

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextResponse } from "next/server";
-import { unitsData, Unit } from "../_data";
+import { unitsData, Unit } from "../../../../../data/units";
 import { withAuth } from "../../../../../lib/auth";
 
 type UnitParams = {
