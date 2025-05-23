@@ -20,214 +20,13 @@
         "tags": [
           "Assets"
         ],
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
         "parameters": [],
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "type": {
-                      "type": "string"
-                    },
-                    "function": {
-                      "type": "string"
-                    },
-                    "energySupplier": {
-                      "type": "string"
-                    },
-                    "aggregator": {
-                      "type": "string"
-                    },
-                    "offeredServices": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "offeredProducts": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "name": {
-                            "type": "string"
-                          },
-                          "active": {
-                            "type": "boolean"
-                          }
-                        }
-                      }
-                    },
-                    "owner": {
-                      "type": "string"
-                    },
-                    "address": {
-                      "type": "string"
-                    },
-                    "city": {
-                      "type": "string"
-                    },
-                    "zipCode": {
-                      "type": "string"
-                    },
-                    "country": {
-                      "type": "string"
-                    },
-                    "latitude": {
-                      "type": "string"
-                    },
-                    "longitude": {
-                      "type": "string"
-                    },
-                    "coordinates": {
-                      "type": "object",
-                      "properties": {
-                        "lat": {
-                          "type": "number"
-                        },
-                        "lng": {
-                          "type": "number"
-                        }
-                      }
-                    },
-                    "available": {
-                      "type": "boolean"
-                    },
-                    "grid": {
-                      "type": "boolean"
-                    },
-                    "gridDetails": {
-                      "type": "object",
-                      "properties": {
-                        "maxImport": {
-                          "type": "string"
-                        },
-                        "maxExport": {
-                          "type": "string"
-                        },
-                        "phaseACurrent": {
-                          "type": "string"
-                        },
-                        "phaseBCurrent": {
-                          "type": "string"
-                        },
-                        "phaseCCurrent": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "pv": {
-                      "type": "boolean"
-                    },
-                    "pvDetails": {
-                      "type": "object",
-                      "properties": {
-                        "peakPower": {
-                          "type": "string"
-                        },
-                        "maxExport": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "battery": {
-                      "type": "boolean"
-                    },
-                    "batteryDetails": {
-                      "type": "object",
-                      "properties": {
-                        "totalCapacity": {
-                          "type": "string"
-                        },
-                        "maxImport": {
-                          "type": "string"
-                        },
-                        "maxExport": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "hvac": {
-                      "type": "boolean"
-                    },
-                    "evse": {
-                      "type": "boolean"
-                    },
-                    "evseDetails": {
-                      "type": "object",
-                      "properties": {
-                        "maxImportPower": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "flexUpMw": {
-                      "type": "number"
-                    },
-                    "flexDownMw": {
-                      "type": "number"
-                    },
-                    "dso": {
-                      "type": "string"
-                    },
-                    "tso": {
-                      "type": "string"
-                    },
-                    "measurementPlaceNo": {
-                      "type": "string"
-                    },
-                    "gsrn": {
-                      "type": "string"
-                    },
-                    "meterNo": {
-                      "type": "string"
-                    },
-                    "alerts": {
-                      "type": "string"
-                    },
-                    "highestAlertImpact": {
-                      "type": "string"
-                    },
-                    "installationDate": {
-                      "type": "string"
-                    },
-                    "lastUpdateTime": {
-                      "type": "string"
-                    },
-                    "deactivatedTime": {
-                      "type": "string"
-                    },
-                    "rampUpTime": {
-                      "type": "string"
-                    },
-                    "rampDownTime": {
-                      "type": "string"
-                    },
-                    "responseDelayTime": {
-                      "type": "string"
-                    },
-                    "regulationType": {
-                      "type": "string"
-                    },
-                    "siteId": {
-                      "type": "string"
-                    }
-                  }
-                }
+                "schema": {}
               }
             }
           }
@@ -242,222 +41,13 @@
         "tags": [
           "Assets"
         ],
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "type": {
-                      "type": "string"
-                    },
-                    "function": {
-                      "type": "string"
-                    },
-                    "energySupplier": {
-                      "type": "string"
-                    },
-                    "aggregator": {
-                      "type": "string"
-                    },
-                    "offeredServices": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "offeredProducts": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "name": {
-                            "type": "string"
-                          },
-                          "active": {
-                            "type": "boolean"
-                          }
-                        }
-                      }
-                    },
-                    "owner": {
-                      "type": "string"
-                    },
-                    "address": {
-                      "type": "string"
-                    },
-                    "city": {
-                      "type": "string"
-                    },
-                    "zipCode": {
-                      "type": "string"
-                    },
-                    "country": {
-                      "type": "string"
-                    },
-                    "latitude": {
-                      "type": "string"
-                    },
-                    "longitude": {
-                      "type": "string"
-                    },
-                    "coordinates": {
-                      "type": "object",
-                      "properties": {
-                        "lat": {
-                          "type": "number"
-                        },
-                        "lng": {
-                          "type": "number"
-                        }
-                      }
-                    },
-                    "available": {
-                      "type": "boolean"
-                    },
-                    "grid": {
-                      "type": "boolean"
-                    },
-                    "gridDetails": {
-                      "type": "object",
-                      "properties": {
-                        "maxImport": {
-                          "type": "string"
-                        },
-                        "maxExport": {
-                          "type": "string"
-                        },
-                        "phaseACurrent": {
-                          "type": "string"
-                        },
-                        "phaseBCurrent": {
-                          "type": "string"
-                        },
-                        "phaseCCurrent": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "pv": {
-                      "type": "boolean"
-                    },
-                    "pvDetails": {
-                      "type": "object",
-                      "properties": {
-                        "peakPower": {
-                          "type": "string"
-                        },
-                        "maxExport": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "battery": {
-                      "type": "boolean"
-                    },
-                    "batteryDetails": {
-                      "type": "object",
-                      "properties": {
-                        "totalCapacity": {
-                          "type": "string"
-                        },
-                        "maxImport": {
-                          "type": "string"
-                        },
-                        "maxExport": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "hvac": {
-                      "type": "boolean"
-                    },
-                    "evse": {
-                      "type": "boolean"
-                    },
-                    "evseDetails": {
-                      "type": "object",
-                      "properties": {
-                        "maxImportPower": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "flexUpMw": {
-                      "type": "number"
-                    },
-                    "flexDownMw": {
-                      "type": "number"
-                    },
-                    "dso": {
-                      "type": "string"
-                    },
-                    "tso": {
-                      "type": "string"
-                    },
-                    "measurementPlaceNo": {
-                      "type": "string"
-                    },
-                    "gsrn": {
-                      "type": "string"
-                    },
-                    "meterNo": {
-                      "type": "string"
-                    },
-                    "alerts": {
-                      "type": "string"
-                    },
-                    "highestAlertImpact": {
-                      "type": "string"
-                    },
-                    "installationDate": {
-                      "type": "string"
-                    },
-                    "lastUpdateTime": {
-                      "type": "string"
-                    },
-                    "deactivatedTime": {
-                      "type": "string"
-                    },
-                    "rampUpTime": {
-                      "type": "string"
-                    },
-                    "rampDownTime": {
-                      "type": "string"
-                    },
-                    "responseDelayTime": {
-                      "type": "string"
-                    },
-                    "regulationType": {
-                      "type": "string"
-                    },
-                    "siteId": {
-                      "type": "string"
-                    }
-                  }
-                }
+                "schema": {}
               }
             }
           }
@@ -475,7 +65,9 @@
         "parameters": [],
         "requestBody": {
           "content": {
-            "application/json": {}
+            "application/json": {
+              "schema": {}
+            }
           }
         },
         "responses": {
@@ -483,14 +75,7 @@
             "description": "Successful response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    }
-                  }
-                }
+                "schema": {}
               }
             }
           }
@@ -508,7 +93,9 @@
         "parameters": [],
         "requestBody": {
           "content": {
-            "application/json": {}
+            "application/json": {
+              "schema": {}
+            }
           }
         },
         "responses": {
@@ -516,17 +103,7 @@
             "description": "Successful response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "access_token": {
-                      "type": "string"
-                    },
-                    "expires_in": {
-                      "type": "number"
-                    }
-                  }
-                }
+                "schema": {}
               }
             }
           }
@@ -541,71 +118,13 @@
         "tags": [
           "Dashboard"
         ],
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
         "parameters": [],
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "acceptedBids": {
-                      "type": "array",
-                      "items": {}
-                    },
-                    "batteryStatus": {
-                      "type": "array",
-                      "items": {}
-                    },
-                    "flexibility": {
-                      "type": "array",
-                      "items": {}
-                    },
-                    "power": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "time": {
-                            "type": "string"
-                          },
-                          "grid": {
-                            "type": "number"
-                          },
-                          "consumption": {
-                            "type": "number"
-                          },
-                          "production": {
-                            "type": "number"
-                          },
-                          "baseline": {
-                            "type": "number"
-                          }
-                        }
-                      }
-                    },
-                    "frequency": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "time": {
-                            "type": "string"
-                          },
-                          "frequency": {
-                            "type": "number"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+                "schema": {}
               }
             }
           }
@@ -619,11 +138,6 @@
         "description": "",
         "tags": [
           "Dashboard"
-        ],
-        "security": [
-          {
-            "BearerAuth": []
-          }
         ],
         "parameters": [],
         "responses": {
@@ -646,11 +160,6 @@
         "tags": [
           "Dashboard"
         ],
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
         "parameters": [],
         "responses": {
           "200": {
@@ -671,11 +180,6 @@
         "description": "",
         "tags": [
           "Dashboard"
-        ],
-        "security": [
-          {
-            "BearerAuth": []
-          }
         ],
         "parameters": [],
         "responses": {
@@ -698,28 +202,13 @@
         "tags": [
           "Dashboard"
         ],
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
         "parameters": [],
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "time": {
-                      "type": "string"
-                    },
-                    "frequency": {
-                      "type": "number"
-                    }
-                  }
-                }
+                "schema": {}
               }
             }
           }
@@ -734,37 +223,13 @@
         "tags": [
           "Dashboard"
         ],
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
         "parameters": [],
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "time": {
-                      "type": "string"
-                    },
-                    "grid": {
-                      "type": "number"
-                    },
-                    "consumption": {
-                      "type": "number"
-                    },
-                    "production": {
-                      "type": "number"
-                    },
-                    "baseline": {
-                      "type": "number"
-                    }
-                  }
-                }
+                "schema": {}
               }
             }
           }
@@ -779,15 +244,12 @@
         "tags": [
           "Push"
         ],
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
         "parameters": [],
         "requestBody": {
           "content": {
-            "application/json": {}
+            "application/json": {
+              "schema": {}
+            }
           }
         },
         "responses": {
@@ -795,14 +257,7 @@
             "description": "Successful response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
+                "schema": {}
               }
             }
           }
@@ -817,15 +272,12 @@
         "tags": [
           "Push"
         ],
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
         "parameters": [],
         "requestBody": {
           "content": {
-            "application/json": {}
+            "application/json": {
+              "schema": {}
+            }
           }
         },
         "responses": {
@@ -833,26 +285,7 @@
             "description": "Successful response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "endpoint": {
-                      "type": "string"
-                    },
-                    "p256dh": {
-                      "type": "string"
-                    },
-                    "auth": {
-                      "type": "string"
-                    },
-                    "userId": {
-                      "type": "string"
-                    }
-                  }
-                }
+                "schema": {}
               }
             }
           }
@@ -867,15 +300,12 @@
         "tags": [
           "Push"
         ],
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
         "parameters": [],
         "requestBody": {
           "content": {
-            "application/json": {}
+            "application/json": {
+              "schema": {}
+            }
           }
         },
         "responses": {
@@ -919,11 +349,6 @@
         "tags": [
           "Push"
         ],
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
         "parameters": [],
         "responses": {
           "200": {
@@ -937,5 +362,8 @@
         }
       }
     }
+  },
+  "components": {
+    "schemas": {}
   }
 }

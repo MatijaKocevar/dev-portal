@@ -74,12 +74,18 @@ export default function ApiDocsPage() {
         <section className="h-full w-full">
             <SwaggerUI
                 spec={spec}
+                tryItOutEnabled={true}
+                deepLinking={true}
+                persistAuthorization={true}
+                displayRequestDuration={true}
+                filter={true}
                 requestInterceptor={(req) => {
-                    const reqHeaders = new Headers(req.headers || {});
-                    if (accessToken) {
-                        reqHeaders.set("Authorization", `Bearer ${accessToken}`);
+                    if (!req.headers) {
+                        req.headers = {};
                     }
-                    req.headers = Object.fromEntries(reqHeaders.entries());
+                    if (accessToken) {
+                        req.headers.Authorization = `Bearer ${accessToken}`;
+                    }
                     return req;
                 }}
             />
