@@ -3,18 +3,24 @@
 import "swagger-ui-react/swagger-ui.css";
 import "./styles.css";
 
-import dynamic from "next/dynamic";
+import SwaggerUI from "swagger-ui-react";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/auth-store";
 
-const SwaggerUI = dynamic(() => import("swagger-ui-react"), {
-    ssr: false,
-    loading: () => <p>Loading Component...</p>,
-});
+type OpenAPISchema = {
+    type?: string | string[];
+    [key: string]: any;
+};
+
+type OpenAPISpec = Document & {
+    components?: {
+        schemas: Record<string, OpenAPISchema>;
+    };
+};
 
 export default function ApiDocsPage() {
     const { accessToken } = useAuthStore.getState();
-    const [spec, setSpec] = useState(null);
+    const [spec, setSpec] = useState<OpenAPISpec | null>(null);
     const [error, setError] = useState("");
 
     useEffect(() => {
@@ -51,9 +57,35 @@ export default function ApiDocsPage() {
                     return;
                 }
 
-                const data = await response.json();
-                setError("");
-                setSpec(data);
+                try {
+                    const data = await response.json();
+                    // Convert OpenAPI 3.1.0 to 3.0.0 for better compatibility
+                    const compatibleSpec = {
+                        ...data,
+                        openapi: "3.0.0",
+                        components: {
+                            ...data.components,
+                            schemas: Object.entries(data.components?.schemas || {}).reduce<
+                                Record<string, OpenAPISchema>
+                            >((acc, [key, schema]) => {
+                                // Convert any 3.1 specific features to 3.0 compatible
+                                const converted = JSON.parse(
+                                    JSON.stringify(schema).replace(
+                                        /"type":\s*\[\s*"([^"]+)"\s*\]/g,
+                                        '"type":"$1"'
+                                    )
+                                ) as OpenAPISchema;
+                                acc[key] = converted;
+                                return acc;
+                            }, {}),
+                        },
+                    };
+                    setError("");
+                    setSpec(compatibleSpec);
+                } catch (parseError) {
+                    console.error("Parse error:", parseError);
+                    setError("Failed to parse API documentation");
+                }
             } catch (err: any) {
                 setError(`Error fetching API documentation: ${err?.message || "Unknown error"}`);
             }
@@ -73,20 +105,23 @@ export default function ApiDocsPage() {
     return (
         <section className="h-full w-full">
             <SwaggerUI
+                url={undefined}
                 spec={spec}
+                supportedSubmitMethods={["get", "post", "put", "delete", "patch"]}
                 tryItOutEnabled={true}
-                deepLinking={true}
-                persistAuthorization={true}
                 displayRequestDuration={true}
-                filter={true}
-                requestInterceptor={(req) => {
-                    if (!req.headers) {
-                        req.headers = {};
+                defaultModelExpandDepth={3}
+                docExpansion="list"
+                showCommonExtensions={true}
+                requestInterceptor={(req: any) => {
+                    const newRequest = { ...req };
+                    if (!newRequest.headers) {
+                        newRequest.headers = {};
                     }
                     if (accessToken) {
-                        req.headers.Authorization = `Bearer ${accessToken}`;
+                        newRequest.headers.Authorization = `Bearer ${accessToken}`;
                     }
-                    return req;
+                    return newRequest;
                 }}
             />
         </section>
