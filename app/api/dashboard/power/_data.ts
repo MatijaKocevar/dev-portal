@@ -6,8 +6,17 @@ export type PowerDataPoint = {
     baseline: number;
 };
 
-export function getPowerData(): PowerDataPoint[] {
-    return Array.from({ length: 24 * 60 }, (_, index) => {
+export type PowerResponse = {
+    current: PowerDataPoint[];
+    forecast: PowerDataPoint[];
+};
+
+export function getPowerData(): PowerResponse {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = Math.floor(now.getMinutes() / 15) * 15;
+
+    const allData = Array.from({ length: 24 * 60 }, (_, index) => {
         const hour = Math.floor(index / 60);
         const minute = index % 60;
         const time = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
@@ -35,4 +44,19 @@ export function getPowerData(): PowerDataPoint[] {
             baseline,
         };
     });
+
+    const current = allData.filter((point) => {
+        const [hours, minutes] = point.time.split(":").map(Number);
+        return hours < currentHour || (hours === currentHour && minutes <= currentMinute);
+    });
+
+    const forecast = allData.filter((point) => {
+        const [hours, minutes] = point.time.split(":").map(Number);
+        return hours > currentHour || (hours === currentHour && minutes > currentMinute);
+    });
+
+    return {
+        current,
+        forecast,
+    };
 }
