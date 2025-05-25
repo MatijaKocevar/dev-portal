@@ -13,10 +13,10 @@ type UnsubscribeResponse = string;
  */
 export const DELETE = withAuth(async (req: NextRequest) => {
     try {
-        const id = parseInt(req.url.split("/").pop() || "");
+        const { endpoint } = await req.json();
 
         await prisma.pushSubscription.delete({
-            where: { id },
+            where: { endpoint },
         });
 
         return new NextResponse("Subscription deleted", { status: 200 });
