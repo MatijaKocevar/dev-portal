@@ -13,7 +13,8 @@ export type PowerResponse = {
 
 export function getPowerData(): PowerResponse {
     const now = new Date();
-    const currentHour = now.getHours();
+    const isProd = process.env.NODE_ENV === "production";
+    const currentHour = isProd ? (now.getHours() + 2) % 24 : now.getHours();
     const currentMinute = Math.floor(now.getMinutes() / 15) * 15;
 
     const allData = Array.from({ length: 24 * 60 }, (_, index) => {
