@@ -32,6 +32,25 @@ type Endpoint = {
 export default function Page() {
     const router = useRouter();
     const { isAuthenticated } = useAuthStore();
+    const [timeInfo, setTimeInfo] = useState({
+        currentTime: new Date(),
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        offset: -(new Date().getTimezoneOffset() / 60),
+        region: Intl.DateTimeFormat().resolvedOptions().locale,
+        isProduction: process.env.NODE_ENV === "production",
+    });
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTimeInfo((prev) => ({
+                ...prev,
+                currentTime: new Date(),
+            }));
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
+
     const [apiStatuses, setApiStatuses] = useState<ApiStatuses>({
         FRONTEND: { status: "pending", lastChecked: null },
         BACKEND: { status: "pending", lastChecked: null },
@@ -216,6 +235,37 @@ export default function Page() {
                 <div className="flex items-center justify-between">
                     <h2 className="text-2xl font-bold tracking-tight">System Status</h2>
                 </div>
+
+                <Card className="mb-4">
+                    <CardHeader>
+                        <CardTitle>Time Information</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid gap-2">
+                            <p>
+                                <strong>Current Time:</strong>{" "}
+                                {timeInfo.currentTime.toLocaleString()}
+                            </p>
+                            <p>
+                                <strong>ISO String:</strong> {timeInfo.currentTime.toISOString()}
+                            </p>
+                            <p>
+                                <strong>Timezone:</strong> {timeInfo.timezone}
+                            </p>
+                            <p>
+                                <strong>UTC Offset:</strong> UTC{timeInfo.offset >= 0 ? "+" : ""}
+                                {timeInfo.offset}:00
+                            </p>
+                            <p>
+                                <strong>Region:</strong> {timeInfo.region}
+                            </p>
+                            <p>
+                                <strong>Environment:</strong>{" "}
+                                {timeInfo.isProduction ? "Production" : "Development"}
+                            </p>
+                        </div>
+                    </CardContent>
+                </Card>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {Object.entries(apiStatuses).map(([apiName, data]) => {
