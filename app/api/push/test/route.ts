@@ -23,7 +23,7 @@ export const POST = withAuth(async (req: NextRequest) => {
             req.headers.get("authorization")?.split(" ")[1] ||
             req.cookies.get("access_token")?.value;
         const decoded = decodeJwt(token!);
-        const userId = decoded.preferred_username as string;
+        const userId = decoded.sub as string;
 
         const subscription = await prisma.pushSubscription.findFirst({
             where: { userId },

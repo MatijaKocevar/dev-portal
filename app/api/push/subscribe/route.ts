@@ -30,7 +30,10 @@ export const POST = withAuth(async (req: NextRequest) => {
             req.cookies.get("access_token")?.value;
 
         const decoded = decodeJwt(token!);
-        const userId = decoded.preferred_username as string;
+
+        console.log("Decoded JWT:", decoded);
+
+        const userId = decoded.sub as string;
 
         const savedSubscription = await savePushSubscription({
             endpoint: subscription.endpoint,
