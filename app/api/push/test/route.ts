@@ -25,12 +25,12 @@ export const POST = withAuth(async (req: NextRequest) => {
         const decoded = decodeJwt(token!);
         const userId = decoded.sub as string;
 
-        const subscription = await prisma.pushSubscription.findFirst({
+        const subscriptions = await prisma.pushSubscription.findMany({
             where: { userId },
         });
 
-        if (!subscription) {
-            return new NextResponse("No subscription found for user", { status: 404 });
+        if (!subscriptions.length) {
+            return new NextResponse("No subscriptions found for user", { status: 404 });
         }
 
         const payload = JSON.stringify({
@@ -41,20 +41,34 @@ export const POST = withAuth(async (req: NextRequest) => {
             },
         });
 
-        await webpush.sendNotification(
-            {
-                endpoint: subscription.endpoint,
-                keys: {
-                    p256dh: subscription.p256dh,
-                    auth: subscription.auth,
-                },
-            },
-            payload
+        const results = await Promise.allSettled(
+            subscriptions.map((subscription) =>
+                webpush.sendNotification(
+                    {
+                        endpoint: subscription.endpoint,
+                        keys: {
+                            p256dh: subscription.p256dh,
+                            auth: subscription.auth,
+                        },
+                    },
+                    payload
+                )
+            )
         );
 
-        return new NextResponse("Notification sent", { status: 200 });
+        const failedCount = results.filter((result) => result.status === "rejected").length;
+        const successCount = results.filter((result) => result.status === "fulfilled").length;
+
+        if (failedCount > 0) {
+            console.error(`Failed to send notifications to ${failedCount} devices`);
+        }
+
+        return new NextResponse(
+            `Notifications sent successfully to ${successCount} devices, failed for ${failedCount} devices`,
+            { status: 200 }
+        );
     } catch (error) {
-        console.error("Error sending notification:", error);
-        return new NextResponse("Error sending notification", { status: 500 });
+        console.error("Error sending notifications:", error);
+        return new NextResponse("Error sending notifications", { status: 500 });
     }
 });
