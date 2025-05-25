@@ -13,16 +13,8 @@ export type PowerResponse = {
 
 export function getPowerData(): PowerResponse {
     const now = new Date();
-    const isProd = process.env.NODE_ENV === "production";
-    const currentHour = isProd ? (now.getHours() + 22) % 24 : now.getHours();
+    const currentHour = now.getHours();
     const currentMinute = Math.floor(now.getMinutes() / 15) * 15;
-
-    console.log("Current date object:", now);
-    console.log("Timezone offset in minutes:", now.getTimezoneOffset());
-    console.log("ISO string:", now.toISOString());
-    console.log("Local string:", now.toString());
-    console.log("Current hour:", currentHour);
-    console.log("Rounded current minute:", currentMinute);
 
     const allData = Array.from({ length: 24 * 60 }, (_, index) => {
         const hour = Math.floor(index / 60);
