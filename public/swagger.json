@@ -320,6 +320,55 @@
         }
       }
     },
+    "/push/unsubscribe": {
+      "delete": {
+        "operationId": "delete-push-unsubscribe",
+        "summary": "Unsubscribe from push notifications.",
+        "description": "",
+        "tags": [
+          "Push"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/push/verify": {
+      "post": {
+        "operationId": "post-push-verify",
+        "summary": "Verify a push subscription.",
+        "description": "",
+        "tags": [
+          "Push"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
     "/push/web-push-key": {
       "get": {
         "operationId": "get-push-web-push-key",

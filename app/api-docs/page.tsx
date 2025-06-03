@@ -19,7 +19,7 @@ type OpenAPISpec = Document & {
 };
 
 export default function ApiDocsPage() {
-    const { accessToken } = useAuthStore.getState();
+    const accessToken = useAuthStore((state) => state.accessToken);
     const [spec, setSpec] = useState<OpenAPISpec | null>(null);
     const [error, setError] = useState("");
 
