@@ -4,8 +4,8 @@ import "swagger-ui-react/swagger-ui.css";
 import "./styles.css";
 
 import SwaggerUI from "swagger-ui-react";
-import { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/auth-store";
+import { useCallback, useEffect, useState } from "react";
 
 type OpenAPISchema = {
     type?: string | string[];
@@ -19,17 +19,29 @@ type OpenAPISpec = Document & {
 };
 
 export default function ApiDocsPage() {
-    const accessToken = useAuthStore((state) => state.accessToken);
     const [spec, setSpec] = useState<OpenAPISpec | null>(null);
     const [error, setError] = useState("");
+
+    const requestInterceptor = useCallback((req: any) => {
+        const newRequest = { ...req };
+        if (!newRequest.headers) {
+            newRequest.headers = {};
+        }
+        const token = useAuthStore.getState().accessToken;
+        if (token) {
+            newRequest.headers.Authorization = `Bearer ${token}`;
+        }
+        return newRequest;
+    }, []);
 
     useEffect(() => {
         const fetchSpec = async () => {
             try {
                 const apiHeaders = new Headers();
+                const token = useAuthStore.getState().accessToken;
 
-                if (accessToken) {
-                    apiHeaders.set("Authorization", `Bearer ${accessToken}`);
+                if (token) {
+                    apiHeaders.set("Authorization", `Bearer ${token}`);
                 } else {
                     setError("No access token available");
                     return;
@@ -92,7 +104,7 @@ export default function ApiDocsPage() {
         };
 
         fetchSpec();
-    }, [accessToken]);
+    }, []);
 
     if (error) {
         return <p className="text-red-500 p-4">{error}</p>;
@@ -113,16 +125,7 @@ export default function ApiDocsPage() {
                 defaultModelExpandDepth={3}
                 docExpansion="list"
                 showCommonExtensions={true}
-                requestInterceptor={(req: any) => {
-                    const newRequest = { ...req };
-                    if (!newRequest.headers) {
-                        newRequest.headers = {};
-                    }
-                    if (accessToken) {
-                        newRequest.headers.Authorization = `Bearer ${accessToken}`;
-                    }
-                    return newRequest;
-                }}
+                requestInterceptor={requestInterceptor}
             />
         </section>
     );

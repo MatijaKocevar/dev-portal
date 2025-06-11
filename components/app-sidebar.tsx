@@ -19,11 +19,11 @@ const mainNav = [
         href: "/api-docs",
         icon: FileCode,
     },
-    {
-        title: "Mock API Documentation",
-        href: "/mock-api-docs",
-        icon: FileCode,
-    },
+    // {
+    //     title: "Mock API Documentation",
+    //     href: "/mock-api-docs",
+    //     icon: FileCode,
+    // },
 ];
 
 export function AppSidebar() {
