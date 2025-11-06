@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 
 const allowedOrigins = [
     "https://dev-portal-management.vercel.app",
-    "https://staging.reduxi.energy",
+    "https://reduxi.energy",
     "http://localhost:5173",
     "https://localhost:5173",
     "https://localhost:3000",
