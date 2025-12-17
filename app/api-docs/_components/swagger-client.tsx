@@ -12,6 +12,8 @@ type OpenAPISpec = {
 };
 
 export default function SwaggerClient({ spec }: { spec: OpenAPISpec }) {
+    console.log("SwaggerClient received spec:", spec ? "✓" : "✗");
+
     const requestInterceptor = useCallback((req: any) => {
         const newRequest = { ...req };
         if (!newRequest.headers) {
@@ -23,6 +25,11 @@ export default function SwaggerClient({ spec }: { spec: OpenAPISpec }) {
         }
         return newRequest;
     }, []);
+
+    if (!spec) {
+        console.error("No spec provided to SwaggerClient");
+        return <p className="text-red-500 p-4">No API specification loaded</p>;
+    }
 
     return (
         <section className="h-full w-full">
