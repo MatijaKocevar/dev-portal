@@ -27,14 +27,26 @@ async function fetchOpenApiSpec(): Promise<OpenAPISpec> {
     }
 
     try {
+        const { cookies } = await import("next/headers");
+        const cookieStore = await cookies();
+        const cookieHeader = cookieStore.toString();
+
+        const headers: HeadersInit = {};
+        if (cookieHeader) {
+            headers["Cookie"] = cookieHeader;
+        }
+
         const response = await fetch(apiUrl, {
             cache: "no-store",
+            headers,
         });
 
         console.log("Fetch response status:", response.status);
 
         if (!response.ok) {
-            console.error(`Failed to fetch OpenAPI spec: ${response.status} ${response.statusText}`);
+            console.error(
+                `Failed to fetch OpenAPI spec: ${response.status} ${response.statusText}`
+            );
             throw new Error(`Failed to fetch: ${response.status}`);
         }
 
@@ -60,7 +72,10 @@ export default async function ApiDocsPage() {
                     Record<string, OpenAPISchema>
                 >((acc, [key, schema]) => {
                     const converted = JSON.parse(
-                        JSON.stringify(schema).replace(/"type":\s*\[\s*"([^"]+)"\s*\]/g, '"type":"$1"')
+                        JSON.stringify(schema).replace(
+                            /"type":\s*\[\s*"([^"]+)"\s*\]/g,
+                            '"type":"$1"'
+                        )
                     ) as OpenAPISchema;
                     acc[key] = converted;
                     return acc;
@@ -73,7 +88,8 @@ export default async function ApiDocsPage() {
         console.error("Error in ApiDocsPage:", error);
         return (
             <p className="text-red-500 p-4">
-                Failed to load API documentation: {error instanceof Error ? error.message : "Unknown error"}
+                Failed to load API documentation:{" "}
+                {error instanceof Error ? error.message : "Unknown error"}
             </p>
         );
     }
