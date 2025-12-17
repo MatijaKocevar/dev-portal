@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
                         value: "Content-Type, Authorization, Accept",
                     },
                     { key: "Access-Control-Allow-Credentials", value: "true" },
-                    { key: "Access-Control-Max-Age", value: "86400" },
+                    { key: "Access-Control-Allow-Max-Age", value: "86400" },
                 ],
             },
         ];
