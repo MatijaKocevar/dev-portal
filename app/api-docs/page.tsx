@@ -13,9 +13,17 @@ type OpenAPISpec = {
 };
 
 async function fetchOpenApiSpec(): Promise<OpenAPISpec> {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    const apiUrl = process.env.NEXT_PUBLIC_OPENAPI_URL;
 
-    const response = await fetch("https://localhost:5000/docs/api", {
+    if (!apiUrl) {
+        throw new Error("NEXT_PUBLIC_OPENAPI_URL is not configured");
+    }
+
+    if (apiUrl.includes("localhost")) {
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    }
+
+    const response = await fetch(apiUrl, {
         cache: "no-store",
     });
 
